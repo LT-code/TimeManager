@@ -1,0 +1,4 @@
+npm install vue-router
+npm install moments
+npm install axios
+npm install vuejs-dialog
