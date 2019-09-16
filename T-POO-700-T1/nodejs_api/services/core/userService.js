@@ -44,8 +44,10 @@ function getUserByEmailAndUsername(email, username) {
 				reject({ status: 'KO', error: err });
 			} else {
 				if (result.rows.length === 0) {
+					console.log('No users found named [ ' + username + ' ]  [ ' + email + ' ].');
 					resolve({ status: 'OK', foundUser: 'No users found named [ ' + username + ' ]  [ ' + email + ' ].' });
 				} else {
+					console.log(result.rows);
 					resolve({ status: 'OK', foundUser: result.rows });
 				}
 			}
@@ -113,8 +115,8 @@ function updateUser(userId, email, username) {
 	return new Promise(async (resolve, reject) => {
 		let toUpdateUser = await this.getUserById(userId);
 
-		if (toUpdateUser.foundUser.length === 0) {
-			reject({ status: 'KO', error: 'No user found with the id [ ' + userId + ' ].' });
+		if (toUpdateUser.foundUser.length === 0 || typeof toUpdateUser.foundUser.id === 'undefined') {
+			reject({ status: 'KO', error: 'No users found with the id [ ' + userId + ' ].' });
 		}
 
 		let updateUserSql = 'UPDATE users SET email = $1, username = $2, updated_at = $3';
@@ -145,7 +147,7 @@ function deleteUser(userId) {
 		console.log('--> ' + toDeleteUser.foundUser.length);
 		console.log('--> ' + util.inspect(toDeleteUser.foundUser));
 
-		if (toDeleteUser.foundUser.length === 0 || toDeleteUser.foundUser.startsWith('No users found')) {
+		if (toDeleteUser.foundUser.length === 0 || typeof toDeleteUser.foundUser.id === 'undefined') {
 			reject({ status: 'KO', error: 'No users found with the id [ ' + userId + ' ].' });
 		}
 
