@@ -8,6 +8,8 @@ defmodule TodolistWeb.ClockController do
 
   action_fallback TodolistWeb.FallbackController
 
+  #####################################################################
+
   def create(conn, %{"clock" => clock_params}) do
     with {:ok, %Clock{} = clock} <- Content.create_clock(clock_params) do
       conn
@@ -17,22 +19,47 @@ defmodule TodolistWeb.ClockController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    clock = Content.get_clock!(id)
+  #####################################################################
+
+  def show_by_u(conn, %{"user_id" => id}) do
+    clock = Repo.get_by!(Clock, user: id)
     render(conn, "show.json", clock: clock)
   end
 
   #####################################################################
 
-  def createClock(conn, id, params) do
-    changeset = Clock.changeset(%Clock{},
-    Map.merge(params, %{"user" => String.to_integer(id), "time" => NaiveDateTime.utc_now()}))
-   
-    case Repo.insert(changeset) do
-      {:ok, clock} ->
-        json conn |> put_status(:created), clock
-      {:error, _changeset} ->
-        json conn |> put_status(:bad_request), %{errors: ["unable to create clock"] }
+  def create_clock(conn, %{"user_id" => id}) do
+    time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
+
+    with {:ok, %Clock{} = clock} <- Res.post_clock(user_id, time) do
+      conn
+      |> put_status(:created)
+      |> render("show.json", clock: clock)
+    end
+
+    with {:ok, %Clock{} = clock} <-
+          %Clock{}
+          |> Clock.changeset(%{start: w,end: w, user: id})
+          |> Repo.insert()
+        do
+      conn
+      |> put_status(:created)
+      #|> put_resp_header("location", Routes.clock_path(conn, :show, clock))
+      |> render("show.json", clock: clock)
+    end
+  end
+
+
+  def create_workingtime(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+    with {:ok, %Workingtime{} = workingtime} <-
+          %Workingtime{}
+          |> Workingtime.changeset(%{start: workingtime_params["start"],end: workingtime_params["end"], user: user_id})
+          |> Repo.insert()
+        do
+      conn
+      |> put_status(:created)
+      #|> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
+      |> render("show.json", workingtime: workingtime)
     end
   end
 end
