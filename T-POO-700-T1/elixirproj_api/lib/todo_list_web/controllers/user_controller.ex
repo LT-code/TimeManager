@@ -50,11 +50,10 @@ defmodule TodolistWeb.UserController do
     Logger.info("coucou")
     Logger.info(inspect(conn, pretty: true))
 
-    case conn.query_params["email"] !== nil do
-      true ->
+    if conn.query_params["email"] !== nil do
         user = Repo.get_by!(User, email: conn.query_params["email"], username: conn.query_params["username"])
         render(conn, "show.json", user: user)
-      false ->
+    else
         users = Account.list_users()
         render(conn, "index.json", users: users)
     end
