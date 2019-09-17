@@ -21,6 +21,20 @@ defmodule TodolistWeb.ClockController do
 
   #####################################################################
 
+  def update(conn, %{"id" => id, "clock" => clock_params}) do
+    clock = Res.get_clock!(id)
+
+    with {:ok, %Clock{} = clock} <-
+    clock
+      |> Clock.changeset(clock_params)
+      |> Repo.update()
+     do
+      render(conn, "show.json", clock: clock)
+    end
+  end
+
+  #####################################################################
+
   def show_by_u(conn, %{"user_id" => id}) do
     clock = Repo.get_by!(Clock, user: id)
     render(conn, "show.json", clock: clock)
@@ -28,38 +42,37 @@ defmodule TodolistWeb.ClockController do
 
   #####################################################################
 
-  def create_clock(conn, %{"user_id" => id}) do
-    time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
+  def post_clock(user_id, time) do
+    last_clock =
+      Repo.one(
+        from c in Clock,
+          order_by: [desc: c.time],
+          where: c.user == ^user_id,
+          select: c,
+          limit: 1
+      )
 
-    with {:ok, %Clock{} = clock} <- Res.post_clock(user_id, time) do
-      conn
-      |> put_status(:created)
-      |> render("show.json", clock: clock)
-    end
+    if last_clock === nil do
+      Content.create_clock(%{time: time, status: true, user: user_id})
+    else
+      new_status = !last_clock.status
+      if new_status === false do
+        Content.create_workingtime(%{start: last_clock.time, end: time, user: user_id})
+      end
 
-    with {:ok, %Clock{} = clock} <-
-          %Clock{}
-          |> Clock.changeset(%{start: w,end: w, user: id})
-          |> Repo.insert()
-        do
-      conn
-      |> put_status(:created)
-      #|> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-      |> render("show.json", clock: clock)
+      Content.update_clock(last_clock, %{time: time, status: new_status, user: user_id})
     end
   end
 
+  #####################################################################
 
-  def create_workingtime(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
-    with {:ok, %Workingtime{} = workingtime} <-
-          %Workingtime{}
-          |> Workingtime.changeset(%{start: workingtime_params["start"],end: workingtime_params["end"], user: user_id})
-          |> Repo.insert()
-        do
+  def create_clock(conn, %{"user_id" => user_id}) do
+    actual_time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
+
+    with {:ok, %Clock{} = clock} <- post_clock(user_id, actual_time) do
       conn
       |> put_status(:created)
-      #|> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
-      |> render("show.json", workingtime: workingtime)
+      |> render("show.json", clock: clock)
     end
   end
 end
