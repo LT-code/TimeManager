@@ -5,6 +5,8 @@ defmodule Todolist.Account.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :password, :string
+    field :role, :id
 
     timestamps()
   end
@@ -14,8 +16,8 @@ defmodule Todolist.Account.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email])
-    |> validate_required([:username, :email])
+    |> cast(attrs, [:username, :email, :role, :password])
+    |> validate_required([:username, :email, :role, :password])
     |> validate_format(:email, @email, message: "must be a valid email address")
   end
 end
