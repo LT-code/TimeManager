@@ -22,13 +22,9 @@ defmodule TodolistWeb.ClockController do
   #####################################################################
 
   def update(conn, %{"id" => id, "clock" => clock_params}) do
-    clock = Res.get_clock!(id)
+    clock = Content.get_clock!(id)
 
-    with {:ok, %Clock{} = clock} <-
-    clock
-      |> Clock.changeset(clock_params)
-      |> Repo.update()
-     do
+    with {:ok, %Clock{} = clock} <- Content.update_clock(clock, clock_params) do
       render(conn, "show.json", clock: clock)
     end
   end
