@@ -9,24 +9,41 @@ defmodule TodolistWeb.UserController do
 
   action_fallback TodolistWeb.FallbackController
 
+  #####################################################################
+
   def index(conn, _params) do
     users = Account.list_users()
     render(conn, "index.json", users: users)
   end
 
+  #####################################################################
+
+  """
+    def create(conn, %{"user" => user_params}) do
+      with {:ok, %User{} = user} <- Account.create_user(user_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", Routes.user_path(conn, :show, user))
+        |> render("show.json", user: user)
+      end
+    end
+  """
+
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Account.create_user(user_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+    with {:ok, %User{} = user} <- Accounts.create_user(user_params),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+      conn |> render("jwt.json", jwt: token)
     end
   end
+
+  #####################################################################
 
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
     render(conn, "show.json", user: user)
   end
+
+  #####################################################################
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Account.get_user!(id)
@@ -35,6 +52,8 @@ defmodule TodolistWeb.UserController do
       render(conn, "show.json", user: user)
     end
   end
+
+  #####################################################################
 
   def delete(conn, %{"id" => id}) do
     user = Account.get_user!(id)
