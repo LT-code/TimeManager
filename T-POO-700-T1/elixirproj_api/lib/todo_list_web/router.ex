@@ -44,7 +44,10 @@ defmodule TodolistWeb.Router do
     pipe_through :api
 
     scope "/users" do
+      options "/sign_up", UserController, :options
       post "/sign_up", UserController, :create
+
+      options "/sign_in", UserController, :options
       post "/sign_in", UserController, :sign_in
     end
   end
