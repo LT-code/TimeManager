@@ -33,6 +33,7 @@ defmodule TodolistWeb.Router do
   end
 
   pipeline :jwt_authenticated do
+    plug CORSPlug
     plug Guardian.AuthPipeline
   end
 
@@ -44,10 +45,10 @@ defmodule TodolistWeb.Router do
     pipe_through :api
 
     scope "/users" do
-      options "/sign_up", UserController, :options
+      #options "/sign_up", UserController, :options
       post "/sign_up", UserController, :create
 
-      options "/sign_in", UserController, :options
+      #options "/sign_in", UserController, :options
       post "/sign_in", UserController, :sign_in
     end
   end
