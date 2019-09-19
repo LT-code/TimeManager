@@ -9,19 +9,19 @@ user_data = [
   %{
     email: "thomas.toto@test.com",
     username: "tolo",
-    password: "toto64480",
+    password_hash: "toto64480",
     role: 1
   },
   %{
     email: "root@test.com",
     username: "root",
-    password: "root",
+    password_hash: "root",
     role: 3
   },
   %{
     email: "boss@test.com",
     username: "boss",
-    password: "admin",
+    password_hash: "admin",
     role: 2
   }
 ]
