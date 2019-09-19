@@ -8,6 +8,8 @@ defmodule TodolistWeb.ClockController do
 
   action_fallback TodolistWeb.FallbackController
 
+  #####################################################################
+
   def create(conn, %{"clock" => clock_params}) do
     with {:ok, %Clock{} = clock} <- Content.create_clock(clock_params) do
       conn
@@ -17,22 +19,56 @@ defmodule TodolistWeb.ClockController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  #####################################################################
+
+  def update(conn, %{"id" => id, "clock" => clock_params}) do
     clock = Content.get_clock!(id)
+
+    with {:ok, %Clock{} = clock} <- Content.update_clock(clock, clock_params) do
+      render(conn, "show.json", clock: clock)
+    end
+  end
+
+  #####################################################################
+
+  def show_by_u(conn, %{"user_id" => id}) do
+    clock = Repo.get_by!(Clock, user: id)
     render(conn, "show.json", clock: clock)
   end
 
   #####################################################################
 
-  def createClock(conn, id, params) do
-    changeset = Clock.changeset(%Clock{},
-    Map.merge(params, %{"user" => String.to_integer(id), "time" => NaiveDateTime.utc_now()}))
-   
-    case Repo.insert(changeset) do
-      {:ok, clock} ->
-        json conn |> put_status(:created), clock
-      {:error, _changeset} ->
-        json conn |> put_status(:bad_request), %{errors: ["unable to create clock"] }
+  def post_clock(user_id, time) do
+    last_clock =
+      Repo.one(
+        from c in Clock,
+          order_by: [desc: c.time],
+          where: c.user == ^user_id,
+          select: c,
+          limit: 1
+      )
+
+    if last_clock === nil do
+      Content.create_clock(%{time: time, status: true, user: user_id})
+    else
+      new_status = !last_clock.status
+      if new_status === false do
+        Content.create_workingtime(%{start: last_clock.time, end: time, user: user_id})
+      end
+
+      Content.update_clock(last_clock, %{time: time, status: new_status, user: user_id})
+    end
+  end
+
+  #####################################################################
+
+  def create_clock(conn, %{"user_id" => user_id}) do
+    actual_time = Elixir.NaiveDateTime.add(Elixir.NaiveDateTime.utc_now(), 7200, :second)
+
+    with {:ok, %Clock{} = clock} <- post_clock(user_id, actual_time) do
+      conn
+      |> put_status(:created)
+      |> render("show.json", clock: clock)
     end
   end
 end

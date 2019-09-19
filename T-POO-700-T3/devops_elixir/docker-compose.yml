@@ -1,0 +1,39 @@
+version: '3'
+services:
+  phoenix:
+    build:
+      context: back
+      dockerfile: Dockerfile
+    environment:
+      #- DATABASE_URL=ecto://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+      PGUSER: ${DB_USER}
+      PGPASSWORD: ${DB_PASSWORD}
+      PGDATABASE: ${DB_NAME}
+      PGHOST: ${DB_HOST}
+      PGPORT: ${DB_PORT}
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: postgres:11.0
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    command: -p ${DB_PORT}
+    restart: always
+    environment:
+      #POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # PGUSER: postgres
+      # PGPASSWORD: postgres
+      # PGDATABASE: gotcitytimemanager_dev
+      # DB_HOST: database
+      # PGPORT: 5432
+volumes:
+  pgdata:
