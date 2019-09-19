@@ -30,6 +30,12 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
+<<<<<<< HEAD
 config :Todolist, Todolist.Guardian,
        issuer: "todo_list",
        secret_key: "eD4/QMs4iyKlKCeFaR2WtkmXolwMdigBP+rv2Oq69DvW8JJAE4GgZP2tSMsZ4vdR"
+=======
+config :myApi, MyApi.Guardian,
+       issuer: "myApi",
+       secret_key: "Secret key. Use `mix guardian.gen.secret` to generate one"
+>>>>>>> 92c46c4dc4fcc293ffac3229e2e557374878abfb
