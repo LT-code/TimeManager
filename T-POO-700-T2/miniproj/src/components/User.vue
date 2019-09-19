@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
   import  {
             get_request_serv,
             post_request_serv,

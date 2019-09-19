@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <Authentification />
     <User msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
 import User from './components/User.vue'
+import Authentification from './components/Authentification.vue'
 
 export default {
   name: 'app',
   components: {
-    User
+    User,
+    Authentification
   }
 }
 </script>
