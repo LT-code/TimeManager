@@ -92,5 +92,13 @@ defmodule TodolistWeb.Router do
       get "/:user_id", ClockController, :show_by_u
       post "/:user_id", ClockController, :create_clock
     end
+
+    ###############
+    # role
+    ###############
+    scope "/roles" do
+      options "/", RoleController, :options
+      get "/", RoleController, :index
+    end
   end
 end

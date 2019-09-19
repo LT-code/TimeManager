@@ -11,33 +11,25 @@
 </template>
 
 <script>
-///===============================================================
-//
-//===============================================================
+  ///===============================================================
+  //
+  //===============================================================
   import  {
             get_request_serv,
             post_request_serv
           } from "../js/http_request.js";
 
   import  {
-            TM_TOKEN,
-            set_token,
-            get_cookie_token
+            set_token
           } from "../js/config.js";
 
   import passwordHash from 'password-hash'
-
-
-  if(get_cookie_token())
-    console.info("cookie exist, no authentification required");
-  else
-    console.info("cookie doesn't exist, authentification required");
 
   ///===============================================================
   //
   //===============================================================
   export default {
-    name: 'ClockManager',
+    name: 'Authentification',
     components: {},
     data() {
       return {

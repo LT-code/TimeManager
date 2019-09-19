@@ -1,8 +1,21 @@
 <template>
   <div>
     <div id='User'>
+      <span>Username</span>
       <input type="text" v-model="user_username"/>
-      <input type="text" v-model="user_email" @change="validEmail()"/>
+
+      <span>Email</span>
+      <input type="text" v-model="user_email"/>   <!-- @change="validEmail()" -->
+
+      <span>Password</span>
+      <input type="password" v-model="user_password"/>
+
+      <span>Confirme password</span>
+      <input type="password" v-model="user_password_confirmation"/>
+
+      <span>Role</span>
+      <Role/>
+
       <button v-on:click='createUser()'>Add User</button>
 
       <input type="hidden" v-model="user_id"/>
@@ -16,6 +29,8 @@
 </template>
 
 <script>
+  import Role from './Role.vue'
+
   import  {
             get_request_serv,
             post_request_serv,
@@ -28,11 +43,15 @@
   //===============================================================
   export default {
     name: 'User',
-    components: {},
+    components: {
+      Role
+    },
     data() {
       return {
         user_username: '',
         user_email: '',
+        user_password: '',
+        user_password_confirmation: '',
         user_id: 7,
 
         // display errors
@@ -49,11 +68,15 @@
 
       //#############################################################
       createUser: function (event) {
+        var e = document.getElementById("select_roles");
         post_request_serv("users",
                           {
                             "user": {
                               email: this.user_email,
-                              username: this.user_username
+                              username: this.user_username,
+                              role: e.selectedIndex + 1,
+                              password: this.password,
+                              password_confirmation: this.password_confirmation
                             }
                           },
                           (success, response) => {
@@ -131,7 +154,6 @@
 
   //#############################################################
   function displayUser(user, row) {
-    console.log(user);
     var td1 = row.insertCell();
     td1.innerHTML =  user.username;
     var td2 = row.insertCell();
@@ -151,7 +173,6 @@
 
   //#############################################################
   function displayUsers(users, tab) {
-    console.log(users.data);
     for(var i = 0; i < Object.keys(users.data).length; i++)
       tab.appendChild(displayUser(users.data[i],tab.insertRow()));
 
