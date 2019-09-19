@@ -45,6 +45,9 @@ defmodule TodolistWeb.Router do
       get "/:id", UserController, :show
       put "/:id", UserController, :update
       delete "/:id", UserController, :delete
+
+      post "/sign_up", UserController, :create
+      post "/sign_in", UserController, :sign_in
     end
 
     ###############
