@@ -1,6 +1,9 @@
 defmodule TodolistWeb.Router do
   use TodolistWeb, :router
 
+  alias Todolist.Guardian
+  alias Todolist.Guardian.AuthPipeline
+
   ####################################################
   #	No rout error
   ####################################################
@@ -29,9 +32,29 @@ defmodule TodolistWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
+  end
 
+
+  ####################################################
+  # without token authentification
+  ####################################################
   scope "/api", TodolistWeb do
     pipe_through :api
+
+    scope "/users" do
+      post "/sign_up", UserController, :create
+      post "/sign_in", UserController, :sign_in
+    end
+  end
+
+
+  ####################################################
+  # with token authentification
+  ####################################################
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :jwt_authenticated]
 
     ###############
     # uers
@@ -45,9 +68,6 @@ defmodule TodolistWeb.Router do
       get "/:id", UserController, :show
       put "/:id", UserController, :update
       delete "/:id", UserController, :delete
-
-      post "/sign_up", UserController, :create
-      post "/sign_in", UserController, :sign_in
     end
 
     ###############

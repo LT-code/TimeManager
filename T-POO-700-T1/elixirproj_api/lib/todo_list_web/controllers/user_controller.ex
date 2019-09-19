@@ -42,7 +42,12 @@ defmodule TodolistWeb.UserController do
   end
 
   #####################################################################
-
+"""
+  def show(conn, _params) do
+       user = Guardian.Plug.current_resource(conn)
+       conn |> render("user.json", user: user)
+    end
+"""
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
     render(conn, "show.json", user: user)
@@ -71,8 +76,6 @@ defmodule TodolistWeb.UserController do
   #####################################################################
 
   def show_by_ue(conn, _params) do
-    Logger.info("coucou")
-    Logger.info(inspect(conn, pretty: true))
 
     if conn.query_params["email"] !== nil do
         user = Repo.get_by!(User, email: conn.query_params["email"], username: conn.query_params["username"])
