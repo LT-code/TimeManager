@@ -6,6 +6,7 @@ defmodule TodolistWeb.UserController do
 
   alias Todolist.Account
   alias Todolist.Account.User
+  alias Todolist.Account.Team
   alias Todolist.Guardian
 
   action_fallback TodolistWeb.FallbackController
@@ -76,19 +77,13 @@ defmodule TodolistWeb.UserController do
   #####################################################################
 
   def show_by_ue(conn, _params) do
-
-    if conn.query_params["email"] !== nil do
+    if conn.query_params["email"] !== nil || conn.query_params["username"] !== nil  do
         user = Repo.get_by!(User, email: conn.query_params["email"], username: conn.query_params["username"])
         render(conn, "show.json", user: user)
     else
         users = Account.list_users()
         render(conn, "index.json", users: users)
     end
-
-    #if conn.query_params["email"] !== nil | conn.query_params["email"] !== nil do
-    #  user = Repo.get_by(User, email: conn.query_params["email"], username: conn.query_params["username"])
-    #  render(conn, "show.json", user: user)
-    #end
   end
 
   #####################################################################
