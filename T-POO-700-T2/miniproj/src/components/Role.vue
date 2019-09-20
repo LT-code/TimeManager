@@ -40,7 +40,7 @@
                                 displayRoles(response.data);
                             });
         else
-          setTimeout(getRoles, 250);
+          setTimeout(getRoles, 100);
       }
     }
   }
