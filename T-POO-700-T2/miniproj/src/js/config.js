@@ -28,6 +28,7 @@ function get_cookie_token() {
     TM_TOKEN = window.$cookies.get(COKKIE_TOKEN_NAME);
     axios.defaults.headers.common[HEADER_TOKEN] = TM_TOKEN;
   }
+  console.info(TM_TOKEN);
 
   return iskey;
 }
@@ -37,7 +38,7 @@ export {get_cookie_token};
 //#############################################################
 
 function set_token(token) {
-  TM_TOKEN = 'Bearer ' + token
+  TM_TOKEN = 'Bearer ' + token;
 
   VueCookies.set(COKKIE_TOKEN_NAME, TM_TOKEN, '30d');
   axios.defaults.headers.common[HEADER_TOKEN] = TM_TOKEN;

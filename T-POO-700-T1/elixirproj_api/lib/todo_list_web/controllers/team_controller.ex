@@ -3,6 +3,10 @@ defmodule TodolistWeb.TeamController do
 
   alias Todolist.Account
   alias Todolist.Account.Team
+  alias Todolist.Content
+  alias Todolist.Content.Workingtime
+
+  alias Todolist.Repo
 
   action_fallback TodolistWeb.FallbackController
 
@@ -15,7 +19,7 @@ defmodule TodolistWeb.TeamController do
     with {:ok, %Team{} = team} <- Account.create_team(team_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.team_path(conn, :show, team))
+      #|> put_resp_header("location", Routes.team_path(conn, :show, team))
       |> render("show.json", team: team)
     end
   end

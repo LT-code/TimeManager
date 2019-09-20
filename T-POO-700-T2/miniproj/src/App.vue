@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <Authentification />
+    <br/>
+    <br/>
+    <br/>
     <User msg="Welcome to Your Vue.js App"/>
+    <br/>
+    <br/>
+    <br/>
+    <Team />
   </div>
 </template>
 
@@ -9,12 +16,13 @@
 //===============================================================
 // import
 //===============================================================
-import  {
-          get_cookie_token
-        } from "./js/config.js";
+  import  {
+            get_cookie_token
+          } from "./js/config.js";
 
   import User from './components/User.vue'
   import Authentification from './components/Authentification.vue'
+  import Team from './components/Team.vue'
 
 ///===============================================================
 //
@@ -23,7 +31,8 @@ import  {
     name: 'app',
     components: {
       User,
-      Authentification
+      Authentification,
+      Team
     },
     created(){
        this.getCookie()
