@@ -16,6 +16,7 @@ defmodule TodolistWeb.UserController do
   def index(conn, _params) do
     users = Account.list_users()
     render(conn, "index.json", users: users)
+
   end
 
   #####################################################################

@@ -14,12 +14,11 @@ defmodule Todolist.Account.User do
     field :password_confirmation, :string, virtual: true
 
     # Association
-    many_to_many :teams, Team, join_through: "users_teams"
+    has_many :usersteams, Todolist.Association.UserTeam
 
     timestamps()
   end
 
-  @optional_fields ~w(team_id)
   @email ~r/\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   @doc false
