@@ -75,6 +75,13 @@ defmodule TodolistWeb.UserController do
     end
   end
 
+
+
+
+
+
+
+
   #####################################################################
 
   def show_by_ue(conn, _params) do

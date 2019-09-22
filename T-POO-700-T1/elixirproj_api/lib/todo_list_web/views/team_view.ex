@@ -1,6 +1,8 @@
 defmodule TodolistWeb.TeamView do
   use TodolistWeb, :view
   alias TodolistWeb.TeamView
+  alias TodolistWeb.UserTeamView
+
 
   def render("index.json", %{teams: teams}) do
     %{data: render_many(teams, TeamView, "team.json")}

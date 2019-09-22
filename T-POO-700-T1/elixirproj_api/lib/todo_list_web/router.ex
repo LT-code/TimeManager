@@ -37,6 +37,12 @@ defmodule TodolistWeb.Router do
     plug Guardian.AuthPipeline
   end
 
+  pipeline :json_api do
+    plug CORSPlug
+    plug :accepts, ["json-api"]
+    plug JaSerializer.Deserialize
+  end
+
 
   ####################################################
   # without token authentification
@@ -115,9 +121,18 @@ defmodule TodolistWeb.Router do
       get "/", TeamController, :index
       post "/", TeamController, :create
 
-      options "/:userID/:teamID", UserTeamController, :options
-      post "/:userID/:teamID", UserTeamController, :create
-      delete "/:userID/teamID", UserTeamController, :delete
+      get "/test", TeamController, :testassoc
+
+      options "/:teamID/:userID", UserTeamController, :options
+      post "/:teamID/:userID", UserTeamController, :create
+      delete "/:teamID/:userID", UserTeamController, :delete
     end
+  end
+
+  scope "/api/teams" do
+    pipe_through [:json_api, :jwt_authenticated]
+
+    options "/test", TeamController, :options
+    get "/test", TeamController, :testassoc
   end
 end

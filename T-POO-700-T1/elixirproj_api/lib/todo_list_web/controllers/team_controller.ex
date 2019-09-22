@@ -1,12 +1,11 @@
 defmodule TodolistWeb.TeamController do
   use TodolistWeb, :controller
+  import Ecto.Query, warn: false
+  alias Todolist.Repo
+  require Logger
 
   alias Todolist.Account
   alias Todolist.Account.Team
-  alias Todolist.Content
-  alias Todolist.Content.Workingtime
-
-  alias Todolist.Repo
 
   action_fallback TodolistWeb.FallbackController
 
@@ -46,6 +45,23 @@ defmodule TodolistWeb.TeamController do
       send_resp(conn, :no_content, "")
     end
   end
+
+
+  def testassoc(conn, params) do
+    team = Team
+            |> where([team], team.id == 1)
+            |> join(:left, [team], usersteam in assoc(team, :usersteams))
+            |> join(:left, [team, usersteam], user in assoc(usersteam, :user))
+            |> preload([team, usersteam, user], [usersteams: {usersteam, user: user}])
+            |> Repo.all()
+    Logger.info(inspect(team))
+    #Logger.info(inspect(Poison.Parser.parse!(Poison.encode(team, []))))
+    #render(conn, Poison.encode(team, []))
+    #json(conn,team)
+    #Logger.info(inspect(Poison.decode!(team)))
+    render(conn, "index.json", team: team)
+  end
+
 
 
   def show(id) do

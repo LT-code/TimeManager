@@ -11,11 +11,12 @@ defmodule TodolistWeb.UserTeamController do
     render(conn, "index.json", usersteams: usersteams)
   end
 
-  def create(conn, %{"user_team" => user_team_params}) do
-    with {:ok, %UserTeam{} = user_team} <- Association.create_user_team(user_team_params) do
+  def create(conn, %{"userID" => userid, "teamID" => teamid}) do
+
+    with {:ok, %UserTeam{} = user_team} <- Association.create_user_team(%{user_id: userid, team_id: teamid}) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.user_team_path(conn, :show, user_team))
+      #|> put_resp_header("location", Routes.user_team_path(conn, :show, user_team))
       |> render("show.json", user_team: user_team)
     end
   end
