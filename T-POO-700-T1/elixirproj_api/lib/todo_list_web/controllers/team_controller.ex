@@ -59,7 +59,7 @@ defmodule TodolistWeb.TeamController do
     #render(conn, Poison.encode(team, []))
     #json(conn,team)
     #Logger.info(inspect(Poison.decode!(team)))
-    render(conn, "index.json", team: team)
+    render(conn, "team_all.json", team: team)
   end
 
 

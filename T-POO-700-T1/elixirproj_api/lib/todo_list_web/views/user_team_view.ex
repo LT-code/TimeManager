@@ -14,4 +14,9 @@ defmodule TodolistWeb.UserTeamView do
     %{team_id: user_team.team_id,
     user_id: user_team.user_id}
   end
+
+  def render("user_team_all.json", %{userteam: user_team}) do
+    render("user_team.json", %{user_team: user_team})
+    |> Map.put_new(:users, render_one(user_team.users, Todolist.UserView, "user.json", as: :user))
+  end
 end
