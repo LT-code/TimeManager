@@ -1,6 +1,9 @@
 defmodule TodolistWeb.Router do
   use TodolistWeb, :router
 
+  alias Todolist.Guardian
+  alias Todolist.Guardian.AuthPipeline
+
   ####################################################
   #	No rout error
   ####################################################
@@ -29,37 +32,73 @@ defmodule TodolistWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug CORSPlug
+    plug Guardian.AuthPipeline
+  end
 
+
+  ####################################################
+  # without token authentification
+  ####################################################
   scope "/api", TodolistWeb do
     pipe_through :api
+
+    scope "/users" do
+      #options "/sign_up", UserController, :options
+      post "/sign_up", UserController, :create
+
+      #options "/sign_in", UserController, :options
+      post "/sign_in", UserController, :sign_in
+    end
+  end
+
+
+  ####################################################
+  # with token authentification
+  ####################################################
+  scope "/api", TodolistWeb do
+    pipe_through [:api, :jwt_authenticated]
 
     ###############
     # uers
     ###############
-    options "/users", UserController, :options
-    get "/users", UserController, :show_by_ue
-    post "/users", UserController, :create
+    scope "/users" do
+      options "/", UserController, :options
+      get "/", UserController, :show_by_ue
+      post "/", UserController, :create
 
-    options "/users:id", UserController, :options
-    get "/users/:id", UserController, :show
-    put "/users/:id", UserController, :update
-    delete "/users/:id", UserController, :delete
-
+      options "/:id", UserController, :options
+      get "/:id", UserController, :show
+      put "/:id", UserController, :update
+      delete "/:id", UserController, :delete
+    end
 
     ###############
     # workingtimes
     ###############
-    get "/workingtimes/:userID", WorkingtimeController, :show_by_use
-    get "/workingtimes/:id", WorkingtimeController, :show_by_uw
-    put "/workingtimes/:id", WorkingtimeController, :update
-    delete "/workingtimes/:id", WorkingtimeController, :delete
-    post "/workingtimes/:id", WorkingtimeController, :create_workingtime
+    scope "/workingtimes" do
+      get "/:user_id/:workingtime_id", WorkingtimeController, :show_by_uw
+      get "/:id", WorkingtimeController, :show_by_use
+      put "/:id", WorkingtimeController, :update
+      delete "/:id", WorkingtimeController, :delete
+      post "/:user_id", WorkingtimeController, :create_workingtime
+    end
 
     ###############
     # clocks
     ###############
+    scope "/clocks" do
+      get "/:user_id", ClockController, :show_by_u
+      post "/:user_id", ClockController, :create_clock
+    end
 
-    get "/clocks/:id", ClockController, :show
-    post "/clocks/:id", ClockController, :createClock
+    ###############
+    # role
+    ###############
+    scope "/roles" do
+      options "/", RoleController, :options
+      get "/", RoleController, :index
+    end
   end
 end

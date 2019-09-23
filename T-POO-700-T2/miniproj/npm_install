@@ -2,3 +2,5 @@ npm install vue-router
 npm install moments
 npm install axios
 npm install vuejs-dialog
+npm install password-hash
+npm install vue-cookies

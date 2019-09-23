@@ -29,3 +29,8 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+
+config :Todolist, Todolist.Guardian,
+       issuer: "todo_list",
+       secret_key: "eD4/QMs4iyKlKCeFaR2WtkmXolwMdigBP+rv2Oq69DvW8JJAE4GgZP2tSMsZ4vdR"
