@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <Authentification />
-    <User msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -25,12 +24,12 @@ import  {
       User,
       Authentification
     },
-    created(){
-       this.getCookie()
+    created() {
+      this.getCookie()
     },
     methods: {
-      getCookie: function(event) {
-        if(get_cookie_token())
+      getCookie: function (event) {
+        if (get_cookie_token())
           console.info("cookie exist, no authentification required");
         else
           console.info("cookie doesn't exist, authentification required");
