@@ -1,13 +1,15 @@
 <template>
 	<div class="row">
 		<div class="col s12 m7">
+			<div v-if="loginError" class="errorMessage">{{ loginError }}</div>
+			<div v-if="loginSuccessful" class="errorMessage">Successful Login</div>
 			<div class="container">
 				<div class="card hoverable">
 					<div class="card-image">
 						<img src="../assets/bim-manager.jpg" alt="Time Manager">
 						<span class="card-title text-black-50">Login</span>
 					</div>
-					<form>
+					<form @submit.prevent="loginSubmit">
 						<div class="input-field col s12">
 							<i class="material-icons prefix">email</i>
 							<label for="email">Your Email</label>
@@ -20,46 +22,19 @@
 						</div>
 					</form>
 					<div class="card-action">
-						<button id="register" class="btn col-lg-4"><a href="#" class="offset-1 text-black-50">Register</a></button>
+						<button id="register" class="btn col-lg-4 text-black-50" type="submit">Login</button>
 					</div>
-					<p>You don't have an account ? <router-link to="/register">Register...</router-link></p>
-					<div v-if="authenticationError === 1">
-						<span>Error on password or email</span>
-					</div>
+					<p>You don't have an account ?
+						<router-link to="/register">Register...</router-link>
+					</p>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--
-	<section class="section container jumbotron" id="login">
-		<h1 class="display-4">Login</h1>
-		<div class="row">
-			<div class="col s12 l6">
-				<form>
-					<div class="input-field">
-						<i class="material-icons prefix">email</i>
-						<input type="email" id="email">
-						<label for="email">Your Email</label>
-					</div>
-					<div class="input-field">
-						<i class="material-icons prefix">lock</i>
-						<textarea id="message" class="materialize-textarea" cols="20" rows="20"></textarea>
-						<label for="message">Your Password</label>
-					</div>
-					<div class="input-field center">
-						<button class="btn col-lg-6">Login</button>
-						<button class="btn col-lg-6">Register</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</section>
--->
 </template>
 
 <script>
-	import { post_request_serv } from "@/js/http_request";
-	import { set_token } from "@/js/config";
+	import { mapActions } from "vuex";
 
 	export default {
 		name: "Login",
@@ -67,23 +42,26 @@
 			return {
 				usermail: '',
 				password: '',
-				authenticationError: 0
+
 			}
 		},
 		methods: {
-			signIn: function (event) {
-				post_request_serv("users/sign_in",
-					{
-						email: this.usermail,
-						password: this.password
-					},
-					(success, response) => {
-						if (success) {
-							set_token(response["data"].jwt);
-							this.errorAuthentification = 0;
-						} else
-							this.errorAuthentification = 1;
-					});
+			...mapActions({
+				getLoggedInStore: 'getLoggedIn'
+			}),
+			loginSubmit: function () {
+				this.getLoggedInStore({ email: this.usermail, password: this.password })
+			}
+		},
+		computed: {
+			loading: function () {
+				return this.$store.state.loading
+			},
+			loginError: function () {
+				return this.$store.state.loginError
+			},
+			loginSuccessful: function () {
+				return this.$store.state.loginSuccessful
 			}
 		}
 	}
