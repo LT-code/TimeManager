@@ -37,6 +37,12 @@ defmodule TodolistWeb.Router do
     plug Guardian.AuthPipeline
   end
 
+  pipeline :json_api do
+    plug CORSPlug
+    plug :accepts, ["json-api"]
+    plug JaSerializer.Deserialize
+  end
+
 
   ####################################################
   # without token authentification
@@ -45,10 +51,10 @@ defmodule TodolistWeb.Router do
     pipe_through :api
 
     scope "/users" do
-      #options "/sign_up", UserController, :options
+      options "/sign_up", UserController, :options
       post "/sign_up", UserController, :create
 
-      #options "/sign_in", UserController, :options
+      options "/sign_in", UserController, :options
       post "/sign_in", UserController, :sign_in
     end
   end
@@ -78,17 +84,23 @@ defmodule TodolistWeb.Router do
     # workingtimes
     ###############
     scope "/workingtimes" do
+      options "/:user_id/:workingtime_id", WorkingtimeController, :options
       get "/:user_id/:workingtime_id", WorkingtimeController, :show_by_uw
+
+      options "/:user_id", WorkingtimeController, :options
+      post "/:user_id", WorkingtimeController, :create_workingtime
+
+      options "/:id", WorkingtimeController, :options
       get "/:id", WorkingtimeController, :show_by_use
       put "/:id", WorkingtimeController, :update
       delete "/:id", WorkingtimeController, :delete
-      post "/:user_id", WorkingtimeController, :create_workingtime
     end
 
     ###############
     # clocks
     ###############
     scope "/clocks" do
+      options "/:user_id", ClockController, :options
       get "/:user_id", ClockController, :show_by_u
       post "/:user_id", ClockController, :create_clock
     end
@@ -100,5 +112,28 @@ defmodule TodolistWeb.Router do
       options "/", RoleController, :options
       get "/", RoleController, :index
     end
+
+    ###############
+    # teams
+    ###############
+    scope "/teams" do
+      options "/", TeamController, :options
+      get "/", TeamController, :index
+      post "/", TeamController, :create
+
+      #get "/test", TeamController, :testassoc
+
+      options "/:teamID/:userID", UserTeamController, :options
+      post "/:teamID/:userID", UserTeamController, :create
+      delete "/:teamID/:userID", UserTeamController, :delete
+    end
   end
+"""
+  scope "/api/teams" do
+    pipe_through [:json_api, :jwt_authenticated]
+
+    options "/test", TeamController, :options
+    get "/test", TeamController, :testassoc
+  end
+"""
 end
