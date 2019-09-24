@@ -4,7 +4,14 @@ defmodule Todolist.Account.Team do
 
   schema "teams" do
     field :name, :string
-    has_many :usersteams, Todolist.Association.UserTeam
+    #has_many :usersteams, Todolist.Association.UserTeam
+
+    many_to_many(
+      :users,
+      Todolist.Account.User,
+      join_through: "usersteams",
+      on_replace: :delete
+    )
 
     timestamps()
   end

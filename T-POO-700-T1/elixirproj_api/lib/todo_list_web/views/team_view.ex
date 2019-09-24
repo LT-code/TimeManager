@@ -4,6 +4,10 @@ defmodule TodolistWeb.TeamView do
   alias TodolistWeb.UserTeamView
 
 
+  ###########
+  # simple
+  ###########
+
   def render("index.json", %{teams: teams}) do
     %{data: render_many(teams, TeamView, "team.json")}
   end
@@ -17,8 +21,31 @@ defmodule TodolistWeb.TeamView do
       name: team.name}
   end
 
-  def render("team_all.json", %{teams: teams}) do
-    render("team.json", %{teams: teams})
-    |> Map.put_new(:usersteams, render_one(teams.usersteams, Todolist.UserTeamView, "user_team_all.json", as: :user_team))
+  ###########
+  # assoc get users
+  ###########
+
+  def render("index_users.json", %{teams: teams}) do
+    %{data: render_many(teams, TeamView, "team_users.json")}
+  end
+
+  def render("team_users.json", %{team: team}) do
+    %{id: team.id,
+      name: team.name,
+      users: render_many(team.users, TodolistWeb.UserView, "user.json", as: :user)}
+  end
+
+  ###########
+  # assoc get workingtimes
+  ###########
+
+  def render("index_workingtimes.json", %{teams: teams}) do
+    %{data: render_many(teams, TeamView, "team_workingtimes.json")}
+  end
+
+  def render("team_workingtimes.json", %{team: team}) do
+    %{id: team.id,
+      name: team.name,
+      users: render_many(team.users, TodolistWeb.UserView, "user_workingtimes.json", as: :user)}
   end
 end
