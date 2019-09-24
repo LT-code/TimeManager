@@ -32,20 +32,17 @@ export default {
 
     methods: {
       onSubmit() {
-        this.user = {
-            email: this.form.email,
-            password: this.form.password
-        }
+        
 
         axios.post('http://localhost:4000/api/users/sign_in', {
-          user: {
-            email: this.user.email,
-            password: this.user.password
-          }
+          
+            email: this.form.email,
+            password: this.form.password
+          
          
         })
         .then((response) => {
-          console.log('jkjdkdjdk')
+          console.log('connecter')
         })
         .catch((error) => {
           console.log(error)
