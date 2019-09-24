@@ -121,18 +121,19 @@ defmodule TodolistWeb.Router do
       get "/", TeamController, :index
       post "/", TeamController, :create
 
-      get "/test", TeamController, :testassoc
+      #get "/test", TeamController, :testassoc
 
       options "/:teamID/:userID", UserTeamController, :options
       post "/:teamID/:userID", UserTeamController, :create
       delete "/:teamID/:userID", UserTeamController, :delete
     end
   end
-
+"""
   scope "/api/teams" do
     pipe_through [:json_api, :jwt_authenticated]
 
     options "/test", TeamController, :options
     get "/test", TeamController, :testassoc
   end
+"""
 end
