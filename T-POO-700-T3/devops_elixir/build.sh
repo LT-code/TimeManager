@@ -10,6 +10,7 @@
   cp entrypoint.sh build/back
   cp docker-compose.yml build
   cp .env build
+  cp dev.exs build/back/config/
 
 #fi
 

@@ -1,6 +1,7 @@
 version: '3'
 services:
   phoenix:
+    container_name: gotam_phoenix
     build:
       context: back
       dockerfile: Dockerfile
@@ -20,9 +21,12 @@ services:
     depends_on:
       - db
   db:
+    container_name: gotam_postgres
     image: postgres:11.0
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     command: -p ${DB_PORT}
     restart: always
     environment:
