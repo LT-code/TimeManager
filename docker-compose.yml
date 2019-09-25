@@ -6,7 +6,7 @@ services:
   phoenix:
     container_name: gotam_back_phoenix
     build:
-      context: back
+      context: T-POO-700-T1/elixirproj_api
       dockerfile: Dockerfile
     environment:
       PGUSER: ${DB_USER}
@@ -29,7 +29,7 @@ services:
   web:
     container_name: gotam_front_vuejs
     build:
-      context: front
+      context: T-POO-700-T2/miniproj
       dockerfile: Dockerfile
     ports:
       - 8080:8080

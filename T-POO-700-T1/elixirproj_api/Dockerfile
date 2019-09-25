@@ -10,6 +10,7 @@ RUN mkdir /back_app
 WORKDIR /back_app
 COPY . /back_app
 
+ENV DB_HOST db
 
 #RUN cd /gotcitytimemanager; \
 RUN mix local.hex --force; \
