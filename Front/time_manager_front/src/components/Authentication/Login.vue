@@ -10,8 +10,8 @@
             <b-form-input id="input-2" v-model="form.password" required type="password" placeholder="Enter password"></b-form-input>
         </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-    </b-form>
+      <b-button type="submit" variant="primary" >Submit</b-button>
+    </b-form  >
   </div>
     
 </template>
@@ -24,7 +24,8 @@ export default {
       return {
         form: {
           email: '',
-          password: ''
+          password: '',
+          accessToken: ''
         },
         errors: []
       }
@@ -41,8 +42,11 @@ export default {
           
          
         })
-        .then((response) => {
-          console.log('connecter')
+        .then((accessToken) => {
+          console.log(accessToken.data);
+          localStorage.setItem('accessToken',token.data.token);
+          router.push('logout');
+          
         })
         .catch((error) => {
           console.log(error)
