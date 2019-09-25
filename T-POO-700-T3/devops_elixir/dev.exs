@@ -5,7 +5,7 @@ config :todo_list, Todolist.Repo,
   username: "postgres",
   password: "postgres",
   database: "todo_list_dev",
-  hostname: "178.18.0.1",
+  hostname: "db",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
