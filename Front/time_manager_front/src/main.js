@@ -1,20 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import BootstrapVue from 'bootstrap-vue';
+import VueRouter from 'vue-router'
+import Routes from './router/routes'
+import store from './stores/loginStore'
 
-import BootstrapVue from 'bootstrap-vue'
-
+Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
+Vue.use(VueRouter);
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-Vue.config.productionTip = false
+const router = new VueRouter({
+  routes: Routes,
+  mode: 'history'
+});
 
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App },
   render: h => h(App),
-});
+  router: router,
+  store: store,
+}).$mount('#app');
