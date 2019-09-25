@@ -16,7 +16,7 @@
 	//===============================================================
 	export default {
 		name: 'app',
-		components: { Navbar },
+		components: {},
 		created() {
 			this.getCookie()
 		},
