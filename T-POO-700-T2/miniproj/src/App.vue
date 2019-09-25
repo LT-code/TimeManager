@@ -12,17 +12,12 @@ import  {
           get_cookie_token
         } from "./js/config.js";
 
-  import User from './components/User.vue'
-  import Authentification from './components/Authentification.vue'
-
 ///===============================================================
 //
 //===============================================================
   export default {
     name: 'app',
     components: {
-      User,
-      Authentification
     },
     created() {
       this.getCookie()
