@@ -14,7 +14,8 @@ defmodule Todolist.Account.User do
     field :password_confirmation, :string, virtual: true
 
     # Association
-    has_many :usersteams, Todolist.Association.UserTeam
+    #has_many :usersteams, Todolist.Association.UserTeam
+    many_to_many :teams, Todolist.Account.Team, join_through: "usersteams", on_replace: :delete
 
     timestamps()
   end

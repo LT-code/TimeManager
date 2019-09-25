@@ -47,19 +47,29 @@ defmodule TodolistWeb.TeamController do
   end
 
 
-  def testassoc(conn, params) do
-    team = Team
-            |> where([team], team.id == 1)
-            |> join(:left, [team], usersteam in assoc(team, :usersteams))
-            |> join(:left, [team, usersteam], user in assoc(usersteam, :user))
-            |> preload([team, usersteam, user], [usersteams: {usersteam, user: user}])
+  def get_users(conn, %{"teamID" => team_id}) do
+    teams = Team
+            |> where([team], team.id == ^team_id)
+            |> join(:left, [team], user in assoc(team, :users))
+            |> preload([team, user], [users: user])
             |> Repo.all()
-    Logger.info(inspect(team))
-    #Logger.info(inspect(Poison.Parser.parse!(Poison.encode(team, []))))
-    #render(conn, Poison.encode(team, []))
-    #json(conn,team)
-    #Logger.info(inspect(Poison.decode!(team)))
-    render(conn, "team_all.json", team: team)
+    Logger.info(inspect(teams))
+
+    render(conn, "index_users.json", teams: teams)
+  end
+
+
+
+  def get_workingtimes(conn, params) do
+    teams = Team
+            |> where([team], team.id == 1)
+            |> join(:left, [user], workingtime in assoc(user, :workingtimes))
+            |> join(:left, [user, workingtime], team in assoc(user, :teams))
+            |> preload([team, user, workingtime], [users: {user, workingtime: workingtime}])
+            |> Repo.all()
+    Logger.info(inspect(teams))
+
+    render(conn, "index_users.json", teams: teams)
   end
 
 

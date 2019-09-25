@@ -11,5 +11,9 @@ defmodule Todolist.Repo.Migrations.CreateUsersteams do
 
     create index(:usersteams, [:user_id])
     create index(:usersteams, [:team_id])
+
+    create(
+      unique_index(:usersteams, [:user_id, :team_id], name: :user_id_team_id_unique_index)
+    )
   end
 end
