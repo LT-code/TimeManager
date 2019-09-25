@@ -21,11 +21,6 @@ defmodule TodolistWeb.UserView do
     %{jwt: jwt}
   end
 
-  def render("jwt.json", %{jwt: jwt}) do
-    %{jwt: jwt}
-  end
-
-
 
   def render("user_workingtimes.json", %{user: user}) do
     %{id: user.id,

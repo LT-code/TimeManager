@@ -19,17 +19,4 @@ defmodule Todolist.Guardian do
   def resource_from_claims(_claims) do
     {:error, :reason_for_error}
   end
-
-  def check_role(conn, role) do
-    case Guardian.Plug.current_resource(conn) do
-      nil ->
-        {:error}
-      user ->
-        if role === user.role do
-          {:ok}
-        else
-          {:error}
-        end
-    end
-  end
 end

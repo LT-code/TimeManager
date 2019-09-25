@@ -1,8 +1,6 @@
 defmodule TodolistWeb.TeamView do
   use TodolistWeb, :view
   alias TodolistWeb.TeamView
-  alias TodolistWeb.UserTeamView
-
 
   ###########
   # simple
