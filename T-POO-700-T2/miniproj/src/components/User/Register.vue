@@ -90,6 +90,8 @@
       return {
         user_email: '',
         user_password: '',
+        user_username: '',
+        user_password_confirmation: '',
         errorAuthentification: 0
       };
     },
