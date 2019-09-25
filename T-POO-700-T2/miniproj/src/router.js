@@ -19,7 +19,7 @@ const router = new Router({
     {
       path: '/',
       name: 'App',
-      component: () =>  import("App.vue")
+      component: () =>  import("./App.vue")
     },
     //=====================================
     // User
