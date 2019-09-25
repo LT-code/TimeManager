@@ -29,7 +29,7 @@ defmodule TodolistWeb.Plug.Authorisation.AuthManager do
   defp halt_plug(conn) do
     conn
     |> put_status(:unauthorized)
-    |> put_view(TodolistWeb.ErrorView)
+    |> put_view(ErrorView)
     |> render("401.json")
     |> halt()
   end

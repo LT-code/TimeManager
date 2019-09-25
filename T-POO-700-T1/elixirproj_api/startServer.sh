@@ -1,2 +1,2 @@
-sudo systemctl start postgresql
+export DB_HOST=localhost
 mix phx.server

@@ -26,8 +26,6 @@ defmodule TodolistWeb.TeamController do
   def show(conn, %{"id" => id}) do
     team = Account.get_team!(id)
     render(conn, "show.json", team: team)
-
-    show(id)
   end
 
   def update(conn, %{"id" => id, "team" => team_params}) do
@@ -59,10 +57,9 @@ defmodule TodolistWeb.TeamController do
   end
 
 
-
-  def get_workingtimes(conn, params) do
+  def get_workingtimes(conn, %{"teamID" => team_id}) do
     teams = Team
-            |> where([team], team.id == 1)
+            |> where([team], team.id == ^team_id)
             |> join(:left, [user], workingtime in assoc(user, :workingtimes))
             |> join(:left, [user, workingtime], team in assoc(user, :teams))
             |> preload([team, user, workingtime], [users: {user, workingtime: workingtime}])
@@ -70,14 +67,5 @@ defmodule TodolistWeb.TeamController do
     Logger.info(inspect(teams))
 
     render(conn, "index_users.json", teams: teams)
-  end
-
-
-
-  def show(id) do
-    model = Repo.get(User, id)
-      |> Team.load_users
-
-    # rendering, etc...
   end
 end
