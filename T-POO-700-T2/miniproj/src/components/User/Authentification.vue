@@ -109,7 +109,7 @@
 
 <style>
 
-  @import url('../../css/User/sign.css');
+  @import '../../css/User/sign.css';
 
   .card{
     height: 330px;
