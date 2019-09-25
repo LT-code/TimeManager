@@ -80,6 +80,9 @@
 
   import router from "../../router"
 
+  require('@/css/User/sign.css')
+
+
   ///===============================================================
   //
   //===============================================================
@@ -90,6 +93,8 @@
       return {
         user_email: '',
         user_password: '',
+        user_username: '',
+        user_password_confirmation: '',
         errorAuthentification: 0
       };
     },
@@ -124,7 +129,7 @@
 </script>
 
 <style>
-  @import url('../../css/User/sign.css');
+  @import '../../css/User/sign.css';
 
   .card {
     height: 420px;

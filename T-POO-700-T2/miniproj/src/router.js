@@ -18,8 +18,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'App',
-      component: () =>  import("./App.vue")
+      name: 'HomePage',
+      component: () =>  import(COMPONENT + "HomePage.vue")
     },
     //=====================================
     // User
