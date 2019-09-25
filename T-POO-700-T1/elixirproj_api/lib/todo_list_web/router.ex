@@ -2,7 +2,6 @@ defmodule TodolistWeb.Router do
   use TodolistWeb, :router
 
   alias Todolist.Guardian
-  alias Todolist.Guardian.AuthPipeline
 
   ####################################################
   #	No rout error
@@ -28,15 +27,21 @@ defmodule TodolistWeb.Router do
   #	pipeline
   ####################################################
   pipeline :api do
-    plug CORSPlug
+    plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
 
   pipeline :jwt_authenticated do
-    plug CORSPlug
     plug Guardian.AuthPipeline
   end
 
+  pipeline :is_manager do
+    plug TodolistWeb.Plug.Authorisation.AuthManager
+  end
+
+  pipeline :is_gen_manager do
+    plug TodolistWeb.Plug.Authorisation.AuthGenManager
+  end
 
   ####################################################
   # without token authentification
@@ -45,10 +50,10 @@ defmodule TodolistWeb.Router do
     pipe_through :api
 
     scope "/users" do
-      #options "/sign_up", UserController, :options
+      options "/sign_up", UserController, :options
       post "/sign_up", UserController, :create
 
-      #options "/sign_in", UserController, :options
+      options "/sign_in", UserController, :options
       post "/sign_in", UserController, :sign_in
     end
   end
@@ -64,6 +69,7 @@ defmodule TodolistWeb.Router do
     # uers
     ###############
     scope "/users" do
+
       options "/", UserController, :options
       get "/", UserController, :show_by_ue
       post "/", UserController, :create
@@ -78,17 +84,21 @@ defmodule TodolistWeb.Router do
     # workingtimes
     ###############
     scope "/workingtimes" do
+      options "/:user_id/:workingtime_id", WorkingtimeController, :options
       get "/:user_id/:workingtime_id", WorkingtimeController, :show_by_uw
+
+      options "/:id", WorkingtimeController, :options
+      post "/:user_id", WorkingtimeController, :create_workingtime
       get "/:id", WorkingtimeController, :show_by_use
       put "/:id", WorkingtimeController, :update
       delete "/:id", WorkingtimeController, :delete
-      post "/:user_id", WorkingtimeController, :create_workingtime
     end
 
     ###############
     # clocks
     ###############
     scope "/clocks" do
+      options "/:user_id", ClockController, :options
       get "/:user_id", ClockController, :show_by_u
       post "/:user_id", ClockController, :create_clock
     end
@@ -99,6 +109,25 @@ defmodule TodolistWeb.Router do
     scope "/roles" do
       options "/", RoleController, :options
       get "/", RoleController, :index
+    end
+
+    ###############
+    # teams
+    ###############
+    scope "/teams" do
+      options "/", TeamController, :options
+      get "/", TeamController, :index
+      post "/", TeamController, :create
+
+      options "/users/:teamID", TeamController, :options
+      get "/users/:teamID", TeamController, :get_users
+
+      options "/workingtimes", TeamController, :options
+      get "/workingtimes", TeamController, :get_workingtimes
+
+      options "/:teamID/:userID", UserTeamController, :options
+      post "/:teamID/:userID", UserTeamController, :create
+      delete "/:teamID/:userID", UserTeamController, :delete
     end
   end
 end

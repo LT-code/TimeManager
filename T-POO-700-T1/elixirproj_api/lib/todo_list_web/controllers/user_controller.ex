@@ -6,7 +6,6 @@ defmodule TodolistWeb.UserController do
 
   alias Todolist.Account
   alias Todolist.Account.User
-  alias Todolist.Guardian
 
   action_fallback TodolistWeb.FallbackController
 
@@ -19,35 +18,17 @@ defmodule TodolistWeb.UserController do
 
   #####################################################################
 
-  """
-    def create(conn, %{"user" => user_params}) do
-      with {:ok, %User{} = user} <- Account.create_user(user_params) do
-        conn
-        |> put_status(:created)
-        |> put_resp_header("location", Routes.user_path(conn, :show, user))
-        |> render("show.json", user: user)
-      end
-    end
-  """
-
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Account.create_user(user_params) do
-        # {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("show.json", user: user)
-      # render("jwt.json", jwt: token)
     end
   end
 
   #####################################################################
-"""
-  def show(conn, _params) do
-       user = Guardian.Plug.current_resource(conn)
-       conn |> render("user.json", user: user)
-    end
-"""
+
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
     render(conn, "show.json", user: user)
@@ -76,19 +57,13 @@ defmodule TodolistWeb.UserController do
   #####################################################################
 
   def show_by_ue(conn, _params) do
-
-    if conn.query_params["email"] !== nil do
+    if conn.query_params["email"] !== nil || conn.query_params["username"] !== nil  do
         user = Repo.get_by!(User, email: conn.query_params["email"], username: conn.query_params["username"])
         render(conn, "show.json", user: user)
     else
         users = Account.list_users()
         render(conn, "index.json", users: users)
     end
-
-    #if conn.query_params["email"] !== nil | conn.query_params["email"] !== nil do
-    #  user = Repo.get_by(User, email: conn.query_params["email"], username: conn.query_params["username"])
-    #  render(conn, "show.json", user: user)
-    #end
   end
 
   #####################################################################

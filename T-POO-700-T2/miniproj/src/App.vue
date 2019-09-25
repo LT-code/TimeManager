@@ -8,7 +8,7 @@
 	//===============================================================
 	// import
 	//===============================================================
-	import { get_cookie_token } from "./js/config.js";
+	import { get_cookie_token } from "./js/cookie.js";
 	import Navbar from "./components/Navbar";
 
 	///===============================================================

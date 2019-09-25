@@ -47,6 +47,7 @@ function put_request_serv(url, json_params = {}, rep_function) {
     rep_function(false, error);
   });
 }
+export {put_request_serv}
 
 
 //#############################################################
@@ -60,6 +61,7 @@ function delete_request_serv(url, rep_function) {
     rep_function(false, error);
   });
 }
+export {delete_request_serv}
 
 
 //#############################################################

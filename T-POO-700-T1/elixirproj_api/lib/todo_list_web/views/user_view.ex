@@ -14,15 +14,20 @@ defmodule TodolistWeb.UserView do
     %{id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role}
+  end
+
+  def render("jwt.json", %{jwt: jwt}) do
+    %{jwt: jwt}
+  end
+
+
+  def render("user_workingtimes.json", %{user: user}) do
+    %{id: user.id,
+      username: user.username,
+      email: user.email,
       role: user.role,
-      password: user.password_hash}
-  end
-
-  def render("jwt.json", %{jwt: jwt}) do
-    %{jwt: jwt}
-  end
-
-  def render("jwt.json", %{jwt: jwt}) do
-    %{jwt: jwt}
+      workingtimes: render_many(user.workingtimes, TodolistWeb.WorkingtimeView, "workingtime.json", as: :workingtime)
+    }
   end
 end
