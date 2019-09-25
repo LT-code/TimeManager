@@ -1,0 +1,30 @@
+FROM node:latest
+
+# installe un simple serveur http pour servir un contenu statique
+RUN npm install -g http-server
+
+# définit le dossier 'app' comme dossier de travail
+RUN mkdir /front_app
+WORKDIR /front_app
+
+# copie 'package.json' et 'package-lock.json' (si disponible)
+COPY package*.json ./
+
+# installe les dépendances du projet
+RUN npm install
+
+# copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
+COPY . .
+
+# construit l'app pour la production en la minifiant
+#RUN npm run build
+
+EXPOSE 8080
+
+#RUN npm run serve
+#CMD [ "http-server", "dist" ]
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
