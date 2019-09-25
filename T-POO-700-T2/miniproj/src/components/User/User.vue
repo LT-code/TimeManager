@@ -1,26 +1,5 @@
 <template>
   <div>
-    <div id='Register_User'>
-      <span>Username</span>
-      <input type="text" v-model="user_username"/>
-
-      <span>Email</span>
-      <input type="text" v-model="user_email"/>   <!-- @change="validEmail()" -->
-
-      <span>Password</span>
-      <input type="password" v-model="user_password"/>
-
-      <span>Confirme password</span>
-      <input type="password" v-model="user_password_confirmation"/>
-
-      <span>Role</span>
-      <Role/>
-
-      <button v-on:click='createUser()'>Add User</button>
-
-      <input type="hidden" v-model="user_id"/>
-    </div>
-
     <div id='Users'>
       <button v-on:click='getUsers()'>Get Users</button>
       <table></table>
@@ -65,27 +44,6 @@
       //===============================================================
       // public
       //===============================================================
-
-      //#############################################################
-      createUser: function (event) {
-        var e = document.getElementById("select_roles");
-        post_request_serv("users",
-                          {
-                            "user": {
-                              email: this.user_email,
-                              username: this.user_username,
-                              role: e.selectedIndex + 1,
-                              password: this.password,
-                              password_confirmation: this.password_confirmation
-                            }
-                          },
-                          (success, response) => {
-                            if(response.status == 200)
-                              console.log(response.data);
-                            else
-                              this.userCreationError = 1;
-                          });
-      },
 
       //#############################################################
       getUser: function (event) {

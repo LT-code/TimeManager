@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import App from './App.vue'
-import FourOFour from './components/FourOFour.vue'
 
 const COMPONENT = "./components/"
+
+//###################################################################
 
 import  {
           is_token
@@ -11,13 +11,15 @@ import  {
 
 Vue.use(Router)
 
+//###################################################################
+
 const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
       name: 'App',
-      component: App
+      component: () =>  import("App.vue")
     },
     //=====================================
     // User
@@ -33,15 +35,18 @@ const router = new Router({
       component: () => import(COMPONENT + "User/Register.vue")
     },
     //=====================================
-    // Not found
+    // not found
     //=====================================
     {
       path: "/*",
       name: "fourofour",
-      component: FourOFour
+      component: () => import(COMPONENT + "FourOFour.vue")
     }
   ]
 })
+
+
+//###################################################################
 
 router.beforeEach((to, from, next) => {
   if(to.path != "/sign_in" && !is_token())
