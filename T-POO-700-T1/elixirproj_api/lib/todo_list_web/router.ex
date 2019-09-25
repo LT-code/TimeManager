@@ -28,21 +28,21 @@ defmodule TodolistWeb.Router do
   #	pipeline
   ####################################################
   pipeline :api do
-    plug CORSPlug
+    plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
 
   pipeline :jwt_authenticated do
-    plug CORSPlug
     plug Guardian.AuthPipeline
   end
 
-  pipeline :json_api do
-    plug CORSPlug
-    plug :accepts, ["json-api"]
-    plug JaSerializer.Deserialize
+  pipeline :is_manager do
+    plug TodolistWeb.Plug.Authorisation.AuthManager
   end
 
+  pipeline :is_gen_manager do
+    plug TodolistWeb.Plug.Authorisation.AuthGenManager
+  end
 
   ####################################################
   # without token authentification
@@ -70,6 +70,7 @@ defmodule TodolistWeb.Router do
     # uers
     ###############
     scope "/users" do
+
       options "/", UserController, :options
       get "/", UserController, :show_by_ue
       post "/", UserController, :create
