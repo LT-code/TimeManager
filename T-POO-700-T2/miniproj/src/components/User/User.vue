@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id='User'>
+    <div id='Register_User'>
       <span>Username</span>
       <input type="text" v-model="user_username"/>
 

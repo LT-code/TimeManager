@@ -1,14 +1,6 @@
 <template>
   <div id="app">
-    <Authentification />
-    <br/>
-    <br/>
-    <br/>
-    <User msg="Welcome to Your Vue.js App"/>
-    <br/>
-    <br/>
-    <br/>
-    <Team />
+    <router-view />
   </div>
 </template>
 
@@ -18,22 +10,14 @@
 //===============================================================
   import  {
             get_cookie_token
-          } from "./js/config.js";
-
-  import User from './components/User.vue'
-  import Authentification from './components/Authentification.vue'
-  import Team from './components/Team.vue'
+          } from "./js/cookie.js";
 
 ///===============================================================
 //
 //===============================================================
   export default {
     name: 'app',
-    components: {
-      User,
-      Authentification,
-      Team
-    },
+    components: {},
     created(){
        this.getCookie()
     },
@@ -41,8 +25,9 @@
       getCookie: function(event) {
         if(get_cookie_token())
           console.info("cookie exist, no authentification required");
-        else
+        else {
           console.info("cookie doesn't exist, authentification required");
+        }
       }
     }
   }
