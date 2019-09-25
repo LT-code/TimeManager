@@ -2,7 +2,6 @@ defmodule TodolistWeb.Router do
   use TodolistWeb, :router
 
   alias Todolist.Guardian
-  alias Todolist.Guardian.AuthPipeline
 
   ####################################################
   #	No rout error
@@ -88,10 +87,8 @@ defmodule TodolistWeb.Router do
       options "/:user_id/:workingtime_id", WorkingtimeController, :options
       get "/:user_id/:workingtime_id", WorkingtimeController, :show_by_uw
 
-      options "/:user_id", WorkingtimeController, :options
-      post "/:user_id", WorkingtimeController, :create_workingtime
-
       options "/:id", WorkingtimeController, :options
+      post "/:user_id", WorkingtimeController, :create_workingtime
       get "/:id", WorkingtimeController, :show_by_use
       put "/:id", WorkingtimeController, :update
       delete "/:id", WorkingtimeController, :delete

@@ -4,7 +4,6 @@ defmodule Todolist.Account.Team do
 
   schema "teams" do
     field :name, :string
-    #has_many :usersteams, Todolist.Association.UserTeam
 
     many_to_many(
       :users,
@@ -15,8 +14,6 @@ defmodule Todolist.Account.Team do
 
     timestamps()
   end
-
-  @optional_fields ~w(user_id)
 
   @doc false
   def changeset(team, attrs) do
