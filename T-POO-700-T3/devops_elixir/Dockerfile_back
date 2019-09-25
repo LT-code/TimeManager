@@ -13,6 +13,7 @@ COPY . /back_app
 
 #RUN cd /gotcitytimemanager; \
 RUN mix local.hex --force; \
+    mix local.rebar rebar3 ./rebar3; \
     mix local.rebar --force; \
     mix deps.get --only prod
 
@@ -24,6 +25,5 @@ COPY ./entrypoint.sh /entrypoint.sh
 
 RUN dos2unix /entrypoint.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
 
-#COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

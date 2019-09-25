@@ -1,1 +1,0 @@
-mix guardian.gen.secret

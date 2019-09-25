@@ -12,5 +12,6 @@ defmodule Todolist.Repo.Migrations.CreateUsers do
     end
 
     create index(:users, [:role])
+    create unique_index(:users, [:email])
   end
 end
