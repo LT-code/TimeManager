@@ -4,6 +4,7 @@ FROM node:latest
 RUN npm install -g http-server
 
 # définit le dossier 'app' comme dossier de travail
+RUN mkdir /front_app
 WORKDIR /front_app
 
 # copie 'package.json' et 'package-lock.json' (si disponible)
@@ -20,5 +21,10 @@ COPY . .
 
 EXPOSE 8080
 
-RUN npm run serve
+#RUN npm run serve
 #CMD [ "http-server", "dist" ]
+
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

@@ -1,12 +1,14 @@
 version: '3'
 services:
+  ###################
+  # back phoenix
+  ###################
   phoenix:
-    container_name: gotam_phoenix
+    container_name: gotam_back_phoenix
     build:
       context: back
       dockerfile: Dockerfile
     environment:
-      #- DATABASE_URL=ecto://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
       PGUSER: ${DB_USER}
       PGPASSWORD: ${DB_PASSWORD}
       PGDATABASE: ${DB_NAME}
@@ -20,8 +22,28 @@ services:
       - db
     depends_on:
       - db
+
+  ###################
+  # front vue js
+  ###################
+  web:
+    container_name: gotam_front_vuejs
+    build:
+      context: front
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      HOST: 0.0.0.0
+    links:
+      - phoenix
+    depends_on:
+      - phoenix
+  ###################
+  # back postgres
+  ###################
   db:
-    container_name: gotam_postgres
+    container_name: gotam_back_postgres
     image: postgres:11.0
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -30,14 +52,8 @@ services:
     command: -p ${DB_PORT}
     restart: always
     environment:
-      #POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
-      # PGUSER: postgres
-      # PGPASSWORD: postgres
-      # PGDATABASE: gotcitytimemanager_dev
-      # DB_HOST: database
-      # PGPORT: 5432
 volumes:
   pgdata:
