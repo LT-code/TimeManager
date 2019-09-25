@@ -10,12 +10,12 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes: Routes,
-  mode: 'history'
+	routes: Routes,
+	mode: 'history'
 });
 
 new Vue({
-  render: h => h(App),
-  router: router,
-  store: store,
+	render: h => h(App),
+	router: router,
+	store: store,
 }).$mount('#app');
