@@ -1,17 +1,25 @@
 <template>
 	<div>
-		<h1>Welcome to Gotham's City Time Management Application !</h1>
-		<h2>If you already have an account, please <router-link to="/login">login</router-link></h2>
-		<h2>Else you can create one <router-link to="/register">here...</router-link></h2>
+		<navbar></navbar>
 	</div>
 </template>
 
 <script>
+	//===============================================================
+	// import
+	//===============================================================
+	import Navbar from "./Navbar";
+
+	///===============================================================
+	//
+	//===============================================================
 	export default {
-		name: "Welcome"
+		name: 'HomePage',
+		components: { Navbar },
+		methods: {}
 	}
 </script>
 
-<style scoped>
+<style>
 
 </style>
