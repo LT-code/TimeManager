@@ -1,8 +1,6 @@
 <template>
 	<div id="app">
-		<navbar></navbar>
-<!--		<Clock></Clock>-->
-		<!--    <router-view></router-view>-->
+		<router-view></router-view>
 	</div>
 </template>
 
@@ -10,19 +8,16 @@
 	//===============================================================
 	// import
 	//===============================================================
-	import { get_cookie_token } from "./js/cookie.js";
-	import Navbar from "./components/Navbar";
-	import Clock from "./components/ClockManager/Clock";
+	import {
+						get_cookie_token
+					} from "./js/cookie.js";
 
 	///===============================================================
 	//
 	//===============================================================
 	export default {
 		name: 'app',
-		components: {
-			Navbar,
-			Clock
-		},
+		components: {},
 		created() {
 			this.getCookie()
 		},
