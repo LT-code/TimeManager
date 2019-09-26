@@ -3,15 +3,41 @@
     <UserPopup/>
     <div id='Users'>
       <div class="table-responsive">
-        <table id="user_table" class="table table-hover table-dark">
+        <table class="table table-hover table-dark">
           <caption>List of users</caption>
-          <thead>
+          <!--<thead>
             <tr>
               <th scope='col'>#</th>
               <th scope='col'>Username</th>
               <th scope='col'>Email</th>
             </tr>
           </thead>
+          <tbody id="user_table">
+
+          </tbody>-->
+          <thead>
+            <tr>
+              <th tabindex="0" style="" data-field="Username">
+                <div class="th-inner both">Item ID</div>
+                <div class="fht-cell"></div>
+              </th>
+              <th tabindex="0" style="" data-field="Email">
+                <div class="th-inner both">Item Name</div>
+                <div class="fht-cell"></div>
+              </th>
+              <th tabindex="0" style="" data-field="id">
+                <div class="th-inner both">Item Price</div>
+                <div class="fht-cell"></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  v-for="row in data">
+              <td>{{row.Username}}</td>
+              <td>{{row.Email}}</td>
+              <td>{{row.id}}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -55,7 +81,9 @@
         userCreationError: 0,
         getUsersError: 0,
         getUserError: 0,
-        userUpdateError: 0
+        userUpdateError: 0,
+
+        data: []
       };
     },
     methods: {
@@ -74,11 +102,20 @@
                           });
       },
 
+      displayUsers(users) {
+        for(var i = 0; i < Object.keys(users.data).length; i++);
+          this.data.push({
+                          Username: users.data[i].username,
+                          Email: users.data[i].email,
+                          id: users.data[i].id
+                        });
+      },
+
       //#############################################################
       getUser_byid: function (event) {
         get_request_serv("users/" + this.user_id,
                           (success, response) => {
-                            displayUsers(response.data);
+                            this.displayUsers(response.data);
                           });
       },
 
@@ -86,7 +123,7 @@
       getUsers: function (event) {
         get_request_serv("users",
                           (success, response) => {
-                            displayUsers(response.data);
+                            this.displayUsers(response.data);
                           });
       },
 
@@ -123,8 +160,18 @@
   //===============================================================
 
   ////#############################################################
-  $('.table > tbody > tr').click(function() {
-
+  /*$(document).ready(function() {
+    $('#user_table > tr').click(function() {
+      this.getUsers();
+      console.info("ok");
+    });
+  })*/
+/*
+  $(document).ready(function($) {
+      $(".table_row").click(function() {
+        console.info("ok");
+          window.document.location = $(this).data("href");
+      });
   });
 
   //#############################################################
@@ -132,10 +179,10 @@
     const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
     return emailRegex.test(this.user_email);
   }
-
+/*
   //#############################################################
   function displayUser(user, number) {//(user, row) {
-    var row = "<tr class='table_refresh_row'>";
+    var row = "<tr @click='alert(\"ok\")' class='table_row'>";
     row += "<th scope='row'>" + number + "</th>"
     row += "<td>" + user.username + "</td>";
     row += "<td>" + user.email + "</td>";
@@ -147,12 +194,17 @@
   }
 
   //#############################################################
-  function displayUsers(users) {
-    $(".table_refresh_row").remove();
+  /*function displayUsers(users) {
+    //$(".table_row").remove();
 
     for(var i = 0; i < Object.keys(users.data).length; i++)
-      $("#user_table").append(displayUser(users.data[i],i + 1));
-  }
+      //$("#user_table").append(displayUser(users.data[i],i + 1));
+      this.data.push({
+                      Username: users.data[i].username,
+                      Email: users.data[i].email,
+                      id: users.data[i].id
+                    })
+  }*/
 </script>
 
 <style>
