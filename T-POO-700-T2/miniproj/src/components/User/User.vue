@@ -1,29 +1,47 @@
 <template>
   <div>
+    <UserPopup/>
     <div id='Users'>
-      <button v-on:click='getUsers()'>Get Users</button>
-      <table></table>
+      <div class="table-responsive">
+        <table id="user_table" class="table table-hover table-dark">
+          <caption>List of users</caption>
+          <thead>
+            <tr>
+              <th scope='col'>#</th>
+              <th scope='col'>Username</th>
+              <th scope='col'>Email</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import Role from './Role.vue'
-
+  ///===============================================================
+  //
+  //===============================================================
   import  {
             get_request_serv,
             post_request_serv,
             put_request_serv,
             delete_request_serv
-          } from "../js/http_request.js";
+          } from "../../js/http_request.js";
+
+  import UserPopup from './UserPopup.vue'
 
   ///===============================================================
   //
   //===============================================================
+
   export default {
     name: 'User',
     components: {
-      Role
+      UserPopup
+    },
+    created(){
+       this.getUsers()
     },
     data() {
       return {
@@ -60,7 +78,7 @@
       getUser_byid: function (event) {
         get_request_serv("users/" + this.user_id,
                           (success, response) => {
-                            displayUsers_tab(response.data);
+                            displayUsers(response.data);
                           });
       },
 
@@ -68,7 +86,7 @@
       getUsers: function (event) {
         get_request_serv("users",
                           (success, response) => {
-                            displayUsers_tab(response.data);
+                            displayUsers(response.data);
                           });
       },
 
@@ -104,6 +122,11 @@
   // private
   //===============================================================
 
+  ////#############################################################
+  $('.table > tbody > tr').click(function() {
+
+  });
+
   //#############################################################
   function validEmail() {
     const emailRegex = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
@@ -111,42 +134,24 @@
   }
 
   //#############################################################
-  function displayUser(user, row) {
-    var td1 = row.insertCell();
-    td1.innerHTML =  user.username;
-    var td2 = row.insertCell();
-    td2.innerHTML = user.email;
-    var td_update = row.insertCell();
-    td_update.innerHTML = "<button v-on:click='createUser()'>Update</button>";
-    var td_delete = row.insertCell();
-    td_delete.innerHTML = "<button v-on:click='deleteUser(" + user.id + ")'>Delete</button>";
-
-    row.appendChild(td1);
-    row.appendChild(td2);
-    row.appendChild(td_update);
-    row.appendChild(td_delete);
+  function displayUser(user, number) {//(user, row) {
+    var row = "<tr class='table_refresh_row'>";
+    row += "<th scope='row'>" + number + "</th>"
+    row += "<td>" + user.username + "</td>";
+    row += "<td>" + user.email + "</td>";
+    //row += "<td><button class='btn' v-on:click='dze()'>Update</button></td>";
+    //row += "<td><button class='btn' v-on:click='adz(" + user.id + ")'>Delete</button></td>";
+    row += "<tr>";
 
     return row;
   }
 
   //#############################################################
-  function displayUsers(users, tab) {
+  function displayUsers(users) {
+    $(".table_refresh_row").remove();
+
     for(var i = 0; i < Object.keys(users.data).length; i++)
-      tab.appendChild(displayUser(users.data[i],tab.insertRow()));
-
-    return tab;
-  }
-
-  //#############################################################
-  function displayUsers_tab(users) {
-    var div = document.getElementById('Users'),
-        tab  = document.createElement('table');
-    tab.style.width  = '100px';
-    tab.style.border = '1px solid black';
-
-    displayUsers(users, tab);
-
-    div.appendChild(tab);
+      $("#user_table").append(displayUser(users.data[i],i + 1));
   }
 </script>
 

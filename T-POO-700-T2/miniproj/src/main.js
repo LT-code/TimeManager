@@ -6,9 +6,12 @@ import store from "./store";
 // js
 import BootstrapVue from 'bootstrap-vue'
 import JQuery from 'jquery'
+import { VudalPlugin } from './Plugin/Popup/index.js';
+
 
 Vue.use(BootstrapVue)
-Vue.use(JQuery)
+//Vue.use(JQuery)
+Vue.use(VudalPlugin);
 
 //css
 import 'bootstrap/dist/css/bootstrap.css'
