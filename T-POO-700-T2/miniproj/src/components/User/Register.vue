@@ -24,7 +24,7 @@
       						<div class="input-group-prepend">
       							<span class="input-group-text"><i class="fa-at fas"></i></span>
       						</div>
-      						<input type="text" class="form-control" placeholder="email" v-model="user_email">
+      						<input type="email" class="form-control" placeholder="email" v-model="user_email">
       					</div>
 
       					<div class="input-group form-group">
@@ -45,7 +45,7 @@
                   <input type="button" value="Register" class="btn float-right login_btn" v-on:click='createUser()'>
                 </div>
 
-                <div v-if="errorAuthentification == 1">
+                <div v-if="userCreationError == 1">
                   <span>Error passord or email</span>
                 </div>
       				</form>
@@ -87,7 +87,7 @@
   //
   //===============================================================
   export default {
-    name: 'Authentification',
+    name: 'Register',
     components: {},
     data() {
       return {

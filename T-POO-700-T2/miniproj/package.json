@@ -16,6 +16,7 @@
     "moment": "^2.24.0",
     "password-hash": "^1.2.2",
     "sweetalert2": "^8.17.6",
+    "vudal": "^1.12.3",
     "vue": "^2.6.10",
     "vue-cli": "^2.9.6",
     "vue-cookies": "^1.5.13",

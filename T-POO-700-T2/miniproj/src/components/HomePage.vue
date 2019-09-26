@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<navbar></navbar>
+		<br>
+		coucou
+		<router-view />
 	</div>
 </template>
 
@@ -15,7 +18,9 @@
 	//===============================================================
 	export default {
 		name: 'HomePage',
-		components: { Navbar },
+		components: {
+			Navbar
+		 },
 		methods: {}
 	}
 </script>

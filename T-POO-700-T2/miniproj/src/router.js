@@ -19,7 +19,14 @@ const router = new Router({
     {
       path: '/',
       name: 'HomePage',
-      component: () =>  import(COMPONENT + "HomePage.vue")
+      component: () =>  import(COMPONENT + "HomePage.vue"),
+      children: [
+            {
+                path: 'user',
+                name: 'User',
+                component: () =>  import(COMPONENT + "User/User.vue"),
+            }
+      ]
     },
     //=====================================
     // User
@@ -31,7 +38,7 @@ const router = new Router({
     },
     {
       path: '/sign_up',
-      name: 'User',
+      name: 'Register',
       component: () => import(COMPONENT + "User/Register.vue")
     },
     //=====================================
