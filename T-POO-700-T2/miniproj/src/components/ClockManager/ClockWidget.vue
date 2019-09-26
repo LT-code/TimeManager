@@ -1,5 +1,16 @@
 <template>
+	<div>
+		<span class="since-time" v-if="!clockIn">I Am Not At Work</span>
+		<span class="since-time" v-if="clockIn">I Am At Work Since {{ startDateTime }}</span>
+		<label class="switch">
+			<input type="checkbox">
+			<span class="slider round" @click="clock"></span>
+		</label>
+	</div>
+
+	<!--
 	<div class="switch col">
+		<input type="checkbox" checked data-toggle="toggle" data-onstyle="primary">
 		<label for="clocker">
 			<span v-if="!clockIn">I Am Not At Work</span>
 			<span class="since-time" v-if="clockIn">I Am At Work Since {{ startDateTime }}</span>
@@ -7,6 +18,7 @@
 			<span class="lever" @click="clock"></span>
 		</label>
 	</div>
+-->
 </template>
 
 <script>
@@ -33,17 +45,7 @@
 	}
 </script>
 
-<style>
-	label {
-		color: #FFF6CB;
-	}
-	.switch label input[type=checkbox]:checked+.lever {
-		background-color: #CCB43C;
-	}
-	.switch label input[type=checkbox]:checked+.lever:after {
-		background-color: #FFF6CB;
-	}
-	.since-time {
-		margin-top: 200px;
-	}
+<style scoped>
+	@import "../../css/Navbar/clockWidget.css";
+
 </style>

@@ -1,24 +1,26 @@
 <template>
-
-	<nav class="blue-grey darken-4">
-		<div class="nav-wrapper">
-			<router-link class="brand-logo" to="/">Time Manager</router-link>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><router-link class="nav-item" to="/">Profile</router-link></li>
-				<li><router-link class="nav-item" to="/">Dashboard</router-link></li>
-				<li><router-link class="nav-item" to="/">Team</router-link></li>
-				<li><router-link class="nav-item" to="/">Working Times</router-link></li>
-				<li><ClockWidget></ClockWidget></li>
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+		<router-link class="navbar-brand" to="/">Time Manager</router-link>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item nav-tab"><router-link class="nav-link" to="/">Profile</router-link></li>
+				<li class="nav-item nav-tab"><router-link class="nav-link" to="/">Dashboard</router-link></li>
+				<li class="nav-item nav-tab"><router-link class="nav-link" to="/">Team</router-link></li>
+				<li class="nav-item nav-tab"><router-link class="nav-link" to="/">Working Times</router-link></li>
+				<li class="nav-item"><ClockWidget class="widget"></ClockWidget></li>
 				<li class="leftBorderDiv">.</li>
-				<li><router-link class="nav-item" to="/">Log Out</router-link></li>
+				<li class="nav-item nav-tab"><router-link class="nav-link" to="/">Log Out</router-link></li>
 			</ul>
 		</div>
 	</nav>
-
 </template>
 
 <script>
 	import ClockWidget from "./ClockManager/ClockWidget";
+
 	export default {
 		name: "Navbar",
 		components: { ClockWidget }
@@ -26,27 +28,11 @@
 </script>
 
 <style scoped>
+	@import "../css/Navbar/navbar.css";
+
 	nav {
 		font-family: 'Nunito', sans-serif;
-	}
-	.nav-item {
-		color: #FFD600;
-	}
-	.brand-logo {
-		color: #FFD600;
-		padding-left: 30px;
-	}
-	.brand-logo:hover, .nav-item:hover {
-		color: #FFEA7F;
-		text-decoration: none;
-	}
-	.leftBorderDiv
-	{
-		color: #998C4C;
-		height: 35px;
-		border-left: 1px solid #998C4C;
-		margin-top: 15px;
-		margin-left: 10px;
-		margin-right: 10px;
+		background-color: #1E292C;
+		padding: 0 0 0 0;
 	}
 </style>
