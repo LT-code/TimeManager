@@ -1,8 +1,10 @@
 <template>
 	<div>
 		<navbar></navbar>
-		<br>
-		coucou
+
+		<div id="navbar-marging">
+		</div>
+
 		<router-view />
 	</div>
 </template>
@@ -26,5 +28,7 @@
 </script>
 
 <style>
-
+#navbar-marging {
+	margin-bottom: 65px;
+}
 </style>
