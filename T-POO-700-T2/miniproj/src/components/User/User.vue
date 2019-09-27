@@ -15,7 +15,7 @@
               </th>
 
               <th tabindex="0" style="" data-field="Username">
-                <div class="th-inner both">User</div>
+                <div class="th-inner both">Username</div>
                 <div class="fht-cell"></div>
               </th>
 
@@ -25,7 +25,7 @@
               </th>
 
               <th tabindex="0" style="" data-field="Role">
-                <div class="th-inner both">Email</div>
+                <div class="th-inner both">Role</div>
                 <div class="fht-cell"></div>
               </th>
             </tr>
