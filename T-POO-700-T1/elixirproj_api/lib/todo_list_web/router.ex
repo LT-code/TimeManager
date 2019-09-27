@@ -55,6 +55,9 @@ defmodule TodolistWeb.Router do
 
       options "/sign_in", UserController, :options
       post "/sign_in", UserController, :sign_in
+
+      options "/log_out", UserController, :options
+      get "/log_out", UserController, :log_out
     end
   end
 

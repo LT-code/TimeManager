@@ -6,7 +6,7 @@ defmodule Todolist.Accounts do
   alias Todolist.Account.User
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   require Logger
-  
+
   defp get_by_email(email) when is_binary(email) do
     Logger.info("get_by_email")
     case Repo.get_by(User, email: email) do
@@ -43,5 +43,11 @@ defmodule Todolist.Accounts do
       _ ->
         {:error, :unauthorized}
     end
+  end
+
+  def token_sign_out(conn, params) do
+    jwt = Guardian.Plug.current_token(conn)
+    Guardian.revoke(jwt)
+    {:ok, :revoked}
   end
 end

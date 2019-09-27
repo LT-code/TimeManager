@@ -89,4 +89,11 @@ defmodule TodolistWeb.UserController do
         {:error, :unauthorized}
     end
   end
+
+  #####################################################################
+
+  def log_out(conn, params) do
+    Todolist.Accounts.token_sign_out(conn, params)
+    {:ok, :log_out}
+  end
 end
