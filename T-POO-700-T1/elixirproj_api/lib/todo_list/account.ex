@@ -73,6 +73,12 @@ defmodule Todolist.Account do
     |> Repo.update()
   end
 
+  def update_user_without_password(%User{} = user, attrs) do
+    user
+    |> User.changeset_update(attrs)
+    |> Repo.update()
+  end
+
   @doc """
   Deletes a User.
 

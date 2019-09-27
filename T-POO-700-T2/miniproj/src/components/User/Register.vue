@@ -45,7 +45,7 @@
                   <input type="button" value="Register" class="btn float-right login_btn" v-on:click='createUser()'>
                 </div>
 
-                <div v-if="userCreationError == 1">
+                <div v-if="errorAuthentification == 1">
                   <span>Error passord or email</span>
                 </div>
       				</form>
@@ -105,7 +105,7 @@
 
       //#############################################################
       createUser: function (event) {
-        post_request_serv("users",
+        post_request_serv("users/sign_up",
                           {
                             "user": {
                               email: this.user_email,
@@ -116,12 +116,19 @@
                             }
                           },
                           (success, response) => {
-                            if(response.status == 200) {
+<<<<<<< HEAD
+                            if(success) {
+=======
+                            if(response.status == 201) {
+>>>>>>> dev
                               console.log(response.data);
                               router.push("/sign_in")
                             }
-                            else
-                              this.userCreationError = 1;
+                            else {
+                              this.errorAuthentification = 1;
+                              console.log(response);
+                            }
+
                           });
       }
     }

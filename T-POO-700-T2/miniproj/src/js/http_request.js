@@ -14,7 +14,7 @@ function get_request_serv(url, rep_function) {
   })
   .catch((error) => {
     console.error(error);
-    rep_function(false, error);
+    rep_function(false, error.response);
   });
 }
 export {get_request_serv}
@@ -29,7 +29,7 @@ function post_request_serv(url, json_params = {}, rep_function) {
     rep_function(treatResponse(response), response);
   })
   .catch((error) => {
-    rep_function(false, error);
+    rep_function(false, error.response);
   });
 }
 export {post_request_serv}
@@ -44,7 +44,7 @@ function put_request_serv(url, json_params = {}, rep_function) {
     rep_function(treatResponse(response), response);
   })
   .catch((error) => {
-    rep_function(false, error);
+    rep_function(false, error.response);
   });
 }
 export {put_request_serv}
@@ -55,10 +55,10 @@ export {put_request_serv}
 function delete_request_serv(url, rep_function) {
   console.log('CONFIG - delete_request_serv(' + TM_URL + url + ')')
   axios.delete(TM_URL + url).then ((response) => {
-    rep_function(treatResponse(response), reponse);
+    rep_function(treatResponse(response), response);
   })
   .catch((error) => {
-    rep_function(false, error);
+    rep_function(false, error.response);
   });
 }
 export {delete_request_serv}

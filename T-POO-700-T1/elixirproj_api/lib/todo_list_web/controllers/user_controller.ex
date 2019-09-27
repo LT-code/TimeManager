@@ -39,8 +39,14 @@ defmodule TodolistWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Account.get_user!(id)
 
-    with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+    if user_params["password"] === nil && user_params["password_confirmation"] === nil do
+      with {:ok, %User{} = user} <- Account.update_user_without_password(user, user_params) do
+        render(conn, "show.json", user: user)
+      end
+    else
+      with {:ok, %User{} = user} <- Account.update_user(user, user_params) do
+        render(conn, "show.json", user: user)
+      end
     end
   end
 
@@ -61,6 +67,13 @@ defmodule TodolistWeb.UserController do
         user = Repo.get_by!(User, email: conn.query_params["email"], username: conn.query_params["username"])
         render(conn, "show.json", user: user)
     else
+        """
+        users = User
+                |> from()
+                |> join(:left, [user], role in assoc(user, :roles))
+                |> preload([user, role], [roles: role])
+                |> Repo.all()
+        """
         users = Account.list_users()
         render(conn, "index.json", users: users)
     end

@@ -3,8 +3,8 @@ defmodule Todolist.Repo.Migrations.CreateUsersteams do
 
   def change do
     create table(:usersteams) do #, primary_key: false
-      add :user_id, references(:users, on_delete: :delete_all)
-      add :team_id, references(:teams, on_delete: :delete_all)
+      add :user_id, references(:users, on_delete: :nothing)
+      add :team_id, references(:teams, on_delete: :nothing)
 
       timestamps()
     end

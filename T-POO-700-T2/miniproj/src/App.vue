@@ -18,16 +18,12 @@
 	export default {
 		name: 'app',
 		components: {},
-		created() {
-			this.getCookie()
-		},
-		methods: {
-			getCookie: function (event) {
-				if (get_cookie_token())
-					console.info("cookie exist, no authentification required");
-				else {
-					console.info("cookie doesn't exist, authentification required");
-				}
+		beforeCreate() {
+			// get cookie
+			if (get_cookie_token())
+				console.info("cookie exist, no authentification required");
+			else {
+				console.info("cookie doesn't exist, authentification required");
 			}
 		}
 	}
