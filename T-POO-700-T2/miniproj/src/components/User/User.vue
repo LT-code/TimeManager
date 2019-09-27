@@ -160,7 +160,7 @@
       deleteUser: function (id) {
         delete_request_serv("users/" + id,
                             (success, response) => {
-                              console.info(response);
+                              this.getUsers();
                             });
       },
 
@@ -171,6 +171,7 @@
       //#############################################################
       displayUsers(users) {
         var role_lib;
+        this.data = [];
 
         for(var i = 0; i < Object.keys(users.data).length; i++) {
           switch(users.data[i].role) {

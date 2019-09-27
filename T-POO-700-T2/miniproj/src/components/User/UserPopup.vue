@@ -100,7 +100,7 @@ export default {
       this.user_username = username;
       this.user_email = email;
       this.user_id = user_id;
-  
+
       document.getElementById("select_roles").selectedIndex = role_id - 1
 
       this.$modals.user_form.$show();
@@ -121,14 +121,14 @@ export default {
                         },
                         (success, response) => {
                           if(success) {
-                            this.$modals.userCreation.hide();
+                            this.$modals.user_form.hide();
+                            this.$parent.getUsers();
                           }
                           else {
                             console.log(response);
                             this.userCreationError = 1;
                           }
                         });
-        this.getUsers();
     },
 
     //#############################################################
@@ -162,7 +162,8 @@ export default {
                         params,
                         (success, response) => {
                           if(success) {
-                            this.$modals.userCreation.hide();
+                            this.$modals.user_form.hide();
+                            this.$parent.getUsers();
                           }
                           else {
                             this.userCreationError = 1;
@@ -170,8 +171,7 @@ export default {
 
                           }
                         });
-      getUsers();
-    }
+    },
   }
 }
 </script>

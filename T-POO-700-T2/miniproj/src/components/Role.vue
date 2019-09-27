@@ -32,7 +32,6 @@
       if(is_token())
         get_request_serv("roles",
                           (success, response) => {
-                            console.info(success);
                             if(success)
                               displayRoles(response.data);
                           });
