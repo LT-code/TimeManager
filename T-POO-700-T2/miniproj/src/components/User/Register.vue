@@ -116,11 +116,7 @@
                             }
                           },
                           (success, response) => {
-<<<<<<< HEAD
-                            if(success) {
-=======
                             if(response.status == 201) {
->>>>>>> dev
                               console.log(response.data);
                               router.push("/sign_in")
                             }
