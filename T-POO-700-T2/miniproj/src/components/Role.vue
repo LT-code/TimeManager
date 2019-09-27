@@ -13,8 +13,8 @@
             get_request_serv,
           } from "../js/http_request.js";
   import  {
-            TM_TOKEN,
-          } from "../js/config.js";
+            is_token,
+          } from "../js/cookie.js";
 
   //===============================================================
   //
@@ -29,7 +29,7 @@
     },
     created() {
       // get roles
-      if(TM_TOKEN != "")
+      if(is_token())
         get_request_serv("roles",
                           (success, response) => {
                             console.info(success);
