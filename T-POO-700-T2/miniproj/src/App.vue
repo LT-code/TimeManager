@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<router-view></router-view>
+		<ChartManager />
 	</div>
 </template>
 
@@ -15,9 +16,12 @@
 	///===============================================================
 	//
 	//===============================================================
+	import ChartManager from './components/ChartManager.component.vue'
 	export default {
 		name: 'app',
-		components: {},
+		components: {
+		ChartManager
+		},
 		created() {
 			this.getCookie()
 		},
