@@ -9,7 +9,7 @@
 
           <thead>
             <tr>
-              <th tabindex="0" style="" data-field="number">
+              <th tabindex="0" style="" data-field="i">
                 <div class="th-inner both">#</div>
                 <div class="fht-cell"></div>
               </th>
@@ -22,10 +22,12 @@
           </thead>
           <tbody>
             <tr class="table_row" v-for="row in data">
+              <td style="display:none;">{{row.id}}</td>
+
+              <td>{{row.i}}</td>
+
               <td>{{row.name}}</td>
 
-              <td style="display:none;">{{row.id}}</td>
-              
               <td><button v-on:click.native="confirm()">Delete</button></td>
             </tr>
           </tbody>
@@ -73,10 +75,11 @@
        $(document).on('click','.table_row', (e) => {
          if(e.target.nodeName != "BUTTON")
            this.$refs.team_popup.showUpdateTeam(
-              e.target.parentElement.childNodes[column_teamname].innerHTML);
+              e.target.parentElement.childNodes[column_name].innerHTML,
+              e.target.parentElement.childNodes[column_id].innerHTML);
           else
             this.$modals.confirm({
-              message: 'Do you want to remove the team ' + e.target.parentElement.parentElement.childNodes[column_teamname].innerHTML + '?',
+              message: 'Do you want to remove the team ' + e.target.parentElement.parentElement.childNodes[column_name].innerHTML + '?',
               onApprove: () => { this.deleteTeam(e.target.parentElement.parentElement.childNodes[column_id].innerHTML); },
               onCancel: () => {  },
             });
@@ -127,33 +130,15 @@
 
       //#############################################################
       displayTeams(teams) {
-        var role_lib;
         this.data = [];
 
-        for(var i = 0; i < Object.keys(teams.data).length; i++) {
-          switch(teams.data[i].role) {
-            case 1:
-              role_lib = "Team"
-              break;
-            case 2:
-              role_lib = "Manager"
-              break;
-            case 3:
-              role_lib = "General Manager"
-              break;
-            default:
-              role_lib = "not defined"
-          }
-
+        for(var i = 0; i < Object.keys(teams.data).length; i++)
           this.data.push({
                           i: i+1,
-                          Teamname: teams.data[i].teamname,
-                          Email: teams.data[i].email,
-                          id: teams.data[i].id,
-                          Role: role_lib,
-                          Id_Role: teams.data[i].role
+                          name: teams.data[i].name,
+                          id: teams.data[i].id
                         });
-        }
+
       }
     }
   }

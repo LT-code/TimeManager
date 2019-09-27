@@ -9,7 +9,8 @@ import  {
 
 function get_request_serv(url, rep_function) {
   console.log('CONFIG - get_request_serv(' + TM_URL + url + ')')
-  axios.get(TM_URL + url).then ((response) => {
+  axios.get(TM_URL + url)
+  .then((response) => {
     rep_function(treatResponse(response, 200), response);
   })
   .catch((error) => {

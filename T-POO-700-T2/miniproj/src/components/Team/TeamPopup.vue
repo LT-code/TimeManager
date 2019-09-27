@@ -1,6 +1,6 @@
 <template>
 <div>
-  <button class='btn btn-primary' v-on:click="showCreateteam()">Add team</button>
+  <button class='btn btn-primary' v-on:click="showCreateTeam()">Add team</button>
 
   <vudal name="team_form" id="team_form">
     <div class="header">
@@ -11,7 +11,6 @@
     <div class="form-style-8 content">
       <form>
         <input v-model="team_name" type="text" placeholder="name" />
-        <Role/>
       </form>
       <div v-if="teamCreationError == 1">
         <span>Error passord or email</span>
@@ -59,6 +58,8 @@ export default {
 
       team_creation: false,
       team_update: false,
+
+      teamCreationError: 0,
 
       dismissCountDown: 0,
       ErrorMessage: ''
@@ -128,7 +129,7 @@ export default {
                         (success, response) => {
                           if(success) {
                             this.$modals.team_form.hide();
-                            this.$parent.getteams();
+                            this.$parent.getTeams();
                           }
                           else {
                             this.teamCreationError = 1;
