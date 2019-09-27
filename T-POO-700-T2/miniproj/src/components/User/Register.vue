@@ -116,7 +116,7 @@
                             }
                           },
                           (success, response) => {
-                            if(response.status == 200) {
+                            if(success) {
                               console.log(response.data);
                               router.push("/sign_in")
                             }

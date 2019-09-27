@@ -27,21 +27,17 @@
         select_roles: ''
       };
     },
-    created(){
-       this.getRoles()
-    },
-    methods: {
-      getRoles: function(event) {
-        if(TM_TOKEN != "")
-          get_request_serv("roles",
-                            (success, response) => {
-                              console.info(success);
-                              if(success)
-                                displayRoles(response.data);
-                            });
-        else
-          setTimeout(getRoles, 100);
-      }
+    created() {
+      // get roles
+      if(TM_TOKEN != "")
+        get_request_serv("roles",
+                          (success, response) => {
+                            console.info(success);
+                            if(success)
+                              displayRoles(response.data);
+                          });
+      else
+        setTimeout(getRoles, 100);
     }
   }
 
