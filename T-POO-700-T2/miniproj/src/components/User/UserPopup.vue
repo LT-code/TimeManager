@@ -5,7 +5,8 @@
   <vudal name="user_form" id="user_form">
     <div class="header">
       <i class="close icon">&times;</i>
-      Create User
+      <div v-if="user_creation" >Create User</div>
+      <div v-if="user_update" >Update User</div>
     </div>
     <div class="form-style-8 content">
       <form>
@@ -20,11 +21,16 @@
       </div>
     </div>
     <div class="actions">
-      <div v-if="user_creation"><button v-on:click="createUser()" class="ui vudal-btn">Create</button></div>
-      <div v-if="user_update"><button class="ui cancel vudal-btn">Cancel</button></div>
+      <button v-if="user_creation" v-on:click="createUser()" class="ui vudal-btn">Create</button>
+      <button v-if="user_update" v-on:click="updateUser()" class="ui vudal-btn">Update</button>
+
+      <button class="ui cancel vudal-btn">Cancel</button>
     </div>
   </vudal>
 
+  <b-alert :show="dismissCountDown" dismissible variant="warning" @dismissed="dismissCountDown=0">
+    Success
+  </b-alert>
 
 </div>
 </template>
@@ -37,7 +43,8 @@ import Role from '../Role.vue'
 import Vudal from '../../Plugin/Popup/index.js';
 
 import  {
-          post_request_serv
+          post_request_serv,
+          put_request_serv
         } from "../../js/http_request.js";
 
 //===============================================================
@@ -56,10 +63,14 @@ export default {
       user_password: '',
       user_username: '',
       user_password_confirmation: '',
+      user_id: 0,
       userCreationError: 0,
 
-      user_creation: 0,
-      user_update: 0
+      user_creation: false,
+      user_update: false,
+
+      dismissCountDown: 0,
+      ErrorMessage: ''
     };
   },
   methods: {
@@ -70,17 +81,31 @@ export default {
     //#############################################################
     showCreateUser() {
       this.userCreationError = 0;
-      this.user_creation = 1;
-      this.user_update = 0;
+      this.user_creation = true;
+      this.user_update = false;
+
+      this.user_username = "";
+      this.user_email = "";
+      this.user_id = 0;
+      this.user_password = "";
+      this.user_password_confirmation = "";
 
       this.$modals.user_form.$show();
     },
 
     //#############################################################
-    showCreateUser() {
+    showUpdateUser: function(username, email, user_id, role_id) {
       this.userCreationError = 0;
-      this.user_creation = 0;
-      this.user_update = 1;
+      this.user_creation = false;
+      this.user_update = true;
+
+      this.user_username = username;
+      this.user_email = email;
+      this.user_id = user_id;
+      this.user_password = "";
+      this.user_password_confirmation = "";
+
+      document.getElementById("select_roles").selectedIndex = role_id - 1
 
       this.$modals.user_form.$show();
     },
@@ -100,27 +125,59 @@ export default {
                         },
                         (success, response) => {
                           if(success) {
-                            console.log(response.data);
-                            router.push("/sign_in")
-                            this.$modals.userCreation.hide();
+                            this.$modals.user_form.hide();
+                            this.$parent.getUsers();
                           }
-                          else
-                          console.log(response);
+                          else {
+                            console.log(response);
                             this.userCreationError = 1;
+                          }
                         });
     },
 
     //#############################################################
-    confirm() {
-      this.$modals.confirm({
-        message: 'Confirm?',
-        onApprove: () => { alert('Approve'); },
-        onCancel: () => { alert('Cancel'); },
-      });
-    }
+    updateUser: function (event) {
+      var e = document.getElementById("select_roles")
+
+      var params;
+      if(this.user_password == "" || this.user_password_confirmation == "")
+        params = {
+                  "user": {
+                    id: this.user_id,
+                    email: this.user_email,
+                    username: this.user_username,
+                    role: e.selectedIndex + 1
+                  }
+                }
+      else
+        params = {
+                  "user": {
+                    id: this.user_id,
+                    email: this.user_email,
+                    username: this.user_username,
+                    role: e.selectedIndex + 1,
+                    password: this.user_password,
+                    password_confirmation: this.user_password_confirmation
+                  }
+                }
+
+
+      put_request_serv("users/" + this.user_id,
+                        params,
+                        (success, response) => {
+                          if(success) {
+                            this.$modals.user_form.hide();
+                            this.$parent.getUsers();
+                          }
+                          else {
+                            this.userCreationError = 1;
+                            console.info(response);
+
+                          }
+                        });
+    },
   }
 }
-
 </script>
 
 <style>

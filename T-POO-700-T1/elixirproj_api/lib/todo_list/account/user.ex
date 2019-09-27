@@ -34,6 +34,15 @@ defmodule Todolist.Account.User do
     |> put_password_hash
   end
 
+  def changeset_update(user, attrs) do
+    user
+    |> cast(attrs, [:username, :email, :role])
+    |> unique_constraint(:email)
+    |> validate_required([:username, :email, :role])
+    |> validate_format(:email, @email, message: "must be a valid email address")
+    |> validate_length(:password, min: 8) # Check that password length is >= 8
+  end
+
   defp put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}}
