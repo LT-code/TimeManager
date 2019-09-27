@@ -87,6 +87,8 @@ export default {
       this.user_username = "";
       this.user_email = "";
       this.user_id = 0;
+      this.user_password = "";
+      this.user_password_confirmation = "";
 
       this.$modals.user_form.$show();
     },
@@ -100,6 +102,8 @@ export default {
       this.user_username = username;
       this.user_email = email;
       this.user_id = user_id;
+      this.user_password = "";
+      this.user_password_confirmation = "";
 
       document.getElementById("select_roles").selectedIndex = role_id - 1
 
