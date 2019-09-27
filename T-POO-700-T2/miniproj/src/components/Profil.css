@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+.input-group-prepend
+{
+color : rgb(200, 204, 200);
+
+
+
+
+}
+
+ 
+
+
+.container{
+    font-family: 'Numans', sans-serif;
+    display: inline-block;
+    outline: none;
+
+}
+
+.form-group input {
+    background-color: 	rgb(128,128,128) ;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}    
+.card-body h3 {
+    
+}
