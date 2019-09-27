@@ -122,6 +122,10 @@ defmodule TodolistWeb.Router do
       get "/", TeamController, :index
       post "/", TeamController, :create
 
+      options "/:id", TeamController, :options
+      delete "/:id", TeamController, :delete
+      put "/:id", TeamController, :update
+
       options "/users/:teamID", TeamController, :options
       get "/users/:teamID", TeamController, :get_users
 

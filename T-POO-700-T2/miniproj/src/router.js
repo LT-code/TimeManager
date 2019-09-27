@@ -25,6 +25,11 @@ const router = new Router({
                 path: 'user',
                 name: 'User',
                 component: () =>  import(COMPONENT + "User/User.vue"),
+            },
+            {
+                path: 'team',
+                name: 'Team',
+                component: () =>  import(COMPONENT + "Team/Team.vue"),
             }
       ]
     },
