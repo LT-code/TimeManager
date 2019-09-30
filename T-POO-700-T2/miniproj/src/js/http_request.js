@@ -67,5 +67,5 @@ export {delete_request_serv}
 //#############################################################
 
 function treatResponse(response, status) {
-  return (response.status == status);
+  return (response.status == status || response.status == 200);
 }
